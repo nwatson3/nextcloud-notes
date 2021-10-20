@@ -84,10 +84,7 @@
     <string name="widget_note_list_placeholder">Няма бележки</string>
     <string name="widget_single_note_title">Единична бележка</string>
     <string name="widget_single_note_placeholder_tv">Бележката не е открита</string>
-    <string name="widget_create_note">Създаване на бележка</string>
     <string name="widget_not_logged_in">Моля, влезте в Notes преди да използвате този изпълним модул</string>
-    <string name="widget_entry_fav_contentDescription">Иконата със звезда се използва за обозначаване на елемент като любим</string>
-
     <string name="activity_select_single_note">Избор на бележка</string>
 
     <string name="shortcut_create_long">Създай нова бележка</string>

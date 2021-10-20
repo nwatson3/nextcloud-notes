@@ -83,10 +83,7 @@
     <string name="widget_note_list_placeholder">No hay notas</string>
     <string name="widget_single_note_title">Nota única</string>
     <string name="widget_single_note_placeholder_tv">Nota no encontrada</string>
-    <string name="widget_create_note">Crear nota</string>
     <string name="widget_not_logged_in">Por favor, inicia sesión en Notas antes de usar este widget</string>
-    <string name="widget_entry_fav_contentDescription">El icono de estrella se usa para indicar que el elemento es un favorito</string>
-
     <string name="activity_select_single_note">Selecciona nota</string>
 
     <string name="shortcut_create_long">Crear una nota nueva</string>
