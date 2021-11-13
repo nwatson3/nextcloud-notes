@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
 
 import it.niedermann.owncloud.notes.preferences.DarkModeSetting;
+import it.niedermann.owncloud.notes.preferences.ViewModeSetting;
 
 import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
 
@@ -21,7 +22,8 @@ public class NotesApplication extends Application {
     private static boolean isLocked = true;
     private static long lastInteraction = 0;
     private static String PREF_KEY_THEME;
-    private static boolean isGridViewEnabled = false;
+    //private static boolean isGridViewEnabled = false;
+    private static ViewModeSetting viewMode = ViewModeSetting.GRID;
 
     @Override
     public void onCreate() {
@@ -29,7 +31,8 @@ public class NotesApplication extends Application {
         setAppTheme(getAppTheme(getApplicationContext()));
         final var prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         lockedPreference = prefs.getBoolean(getString(R.string.pref_key_lock), false);
-        isGridViewEnabled = getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_key_gridview), false);
+        //isGridViewEnabled = getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_key_gridview), false);
+        viewMode = ViewModeSetting.createFromId(this, getDefaultSharedPreferences(this).getString(getString(R.string.pref_key_view_mode), "list"));
         super.onCreate();
     }
 
@@ -37,13 +40,19 @@ public class NotesApplication extends Application {
         AppCompatDelegate.setDefaultNightMode(setting.getModeId());
     }
 
-    public static boolean isGridViewEnabled() {
-        return isGridViewEnabled;
+    public static ViewModeSetting getViewMode() {
+        return viewMode;
     }
+    //public static boolean isGridViewEnabled() {
+    //    return isGridViewEnabled;
+    //}
 
-    public static void updateGridViewEnabled(boolean gridView) {
-        isGridViewEnabled = gridView;
+    public static void updateViewMode(ViewModeSetting viewModeSetting) {
+        viewMode = viewModeSetting;
     }
+    //public static void updateGridViewEnabled(boolean gridView) {
+    //    isGridViewEnabled = gridView;
+    //}
 
     public static DarkModeSetting getAppTheme(Context context) {
         final var prefs = PreferenceManager.getDefaultSharedPreferences(context);

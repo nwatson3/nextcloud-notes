@@ -34,6 +34,7 @@ import it.niedermann.owncloud.notes.main.items.list.NoteViewHolderWithoutExcerpt
 import it.niedermann.owncloud.notes.main.items.section.SectionItem;
 import it.niedermann.owncloud.notes.main.items.section.SectionViewHolder;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
+import it.niedermann.owncloud.notes.preferences.ViewModeSetting;
 import it.niedermann.owncloud.notes.shared.model.Item;
 import it.niedermann.owncloud.notes.shared.model.NoteClickListener;
 
@@ -49,7 +50,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public static final int TYPE_NOTE_ONLY_TITLE = 3;
 
     private final NoteClickListener noteClickListener;
-    private final boolean gridView;
+    private final ViewModeSetting viewMode;
     @NonNull
     private final List<Item> itemList = new ArrayList<>();
     private boolean showCategory = true;
@@ -65,9 +66,10 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Nullable
     private Integer swipedPosition;
 
-    public <T extends Context & NoteClickListener> ItemAdapter(@NonNull T context, boolean gridView) {
+    public <T extends Context & NoteClickListener> ItemAdapter(@NonNull T context, ViewModeSetting viewMode) {
         this.noteClickListener = context;
-        this.gridView = gridView;
+        this.viewMode = viewMode;
+        //this.gridView = gridView;
         this.mainColor = ContextCompat.getColor(context, R.color.defaultBrand);
         this.textColor = Color.WHITE;
         final var sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
@@ -101,7 +103,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if (gridView) {
+        if (viewMode == ViewModeSetting.GRID) {
             switch (viewType) {
                 case TYPE_SECTION: {
                     return new SectionViewHolder(ItemNotesListSectionItemBinding.inflate(inflater));

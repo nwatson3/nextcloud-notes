@@ -35,11 +35,15 @@
             android:summary="%s"
             android:title="@string/settings_theme_title" />
 
-        <it.niedermann.owncloud.notes.branding.BrandedSwitchPreference
-            android:icon="@drawable/ic_baseline_dashboard_24"
-            android:key="@string/pref_key_gridview"
-            android:layout="@layout/item_pref"
-            android:title="@string/settings_gridview" />
+        <ListPreference
+            android:entries="@array/viewMode_entries"
+            android:entryValues="@array/viewMode_values"
+            android:key="@string/pref_key_view_mode"
+            android:title="@string/settings_view_type"
+            app:defaultValue="listView"
+            app:icon="@drawable/ic_baseline_dashboard_24"
+            app:layout="@layout/item_pref"
+            app:summary="%s" />
 
         <it.niedermann.owncloud.notes.branding.BrandedSwitchPreference
             android:defaultValue="@string/pref_value_font_normal"
@@ -68,7 +72,6 @@
             android:summary="%s"
             android:title="@string/settings_note_mode" />
     </it.niedermann.owncloud.notes.branding.BrandedPreferenceCategory>
-
     <it.niedermann.owncloud.notes.branding.BrandedPreferenceCategory
         android:key="@string/pref_category_security"
         app:layout="@layout/item_preference_category"

@@ -24,6 +24,7 @@ import it.niedermann.owncloud.notes.main.items.ItemAdapter;
 import it.niedermann.owncloud.notes.main.items.NoteViewHolder;
 import it.niedermann.owncloud.notes.main.items.section.SectionViewHolder;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
+import it.niedermann.owncloud.notes.preferences.ViewModeSetting;
 
 public class NotesListViewItemTouchHelper extends ItemTouchHelper {
 
@@ -38,7 +39,7 @@ public class NotesListViewItemTouchHelper extends ItemTouchHelper {
             @NonNull ItemAdapter adapter,
             @NonNull SwipeRefreshLayout swipeRefreshLayout,
             @NonNull View view,
-            boolean gridView) {
+            @NonNull ViewModeSetting viewMode) {
         super(new SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             private boolean swipeRefreshLayoutEnabled;
 
@@ -56,7 +57,7 @@ public class NotesListViewItemTouchHelper extends ItemTouchHelper {
              */
             @Override
             public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                if (gridView || viewHolder instanceof SectionViewHolder) return 0;
+                if (viewMode == ViewModeSetting.GRID || viewHolder instanceof SectionViewHolder) return 0;
                 return super.getSwipeDirs(recyclerView, viewHolder);
             }
 

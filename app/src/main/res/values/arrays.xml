@@ -15,4 +15,9 @@
         <item>@string/pref_value_theme_dark</item>
         <item>@string/pref_value_theme_system_default</item>
     </string-array>
+    <string-array name="viewMode_values">
+        <item>@string/pref_view_mode_grid</item>
+        <item>@string/pref_view_mode_list</item>
+        <item>@string/pref_view_mode_compact</item>
+    </string-array>
 </resources>

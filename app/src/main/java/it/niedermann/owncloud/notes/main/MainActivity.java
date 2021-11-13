@@ -5,7 +5,7 @@ import static android.os.Build.VERSION_CODES.O;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static it.niedermann.owncloud.notes.NotesApplication.isDarkThemeActive;
-import static it.niedermann.owncloud.notes.NotesApplication.isGridViewEnabled;
+import static it.niedermann.owncloud.notes.NotesApplication.getViewMode;
 import static it.niedermann.owncloud.notes.branding.BrandingUtil.getSecondaryForegroundColorDependingOnTheme;
 import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.DEFAULT_CATEGORY;
 import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.FAVORITES;
@@ -92,6 +92,7 @@ import it.niedermann.owncloud.notes.persistence.CapabilitiesClient;
 import it.niedermann.owncloud.notes.persistence.CapabilitiesWorker;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
+import it.niedermann.owncloud.notes.preferences.ViewModeSetting;
 import it.niedermann.owncloud.notes.shared.model.CategorySortingMethod;
 import it.niedermann.owncloud.notes.shared.model.IResponseCallback;
 import it.niedermann.owncloud.notes.shared.model.NavigationCategory;
@@ -109,7 +110,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
     protected MainViewModel mainViewModel;
     private CategoryViewModel categoryViewModel;
 
-    private boolean gridView = true;
+    private ViewModeSetting viewMode = ViewModeSetting.GRID;
 
     public static final String ADAPTER_KEY_RECENT = "recent";
     public static final String ADAPTER_KEY_STARRED = "starred";
@@ -152,9 +153,10 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
         this.fabCreate = binding.activityNotesListView.fabCreate;
         this.listView = binding.activityNotesListView.recyclerView;
 
-        gridView = isGridViewEnabled();
+        viewMode = getViewMode();
+        //gridView = isGridViewEnabled();
 
-        if (!gridView || isDarkThemeActive(this)) {
+        if (!(viewMode == ViewModeSetting.GRID) || isDarkThemeActive(this)) {
             activityBinding.activityNotesListView.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
         }
 
@@ -421,10 +423,10 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
     }
 
     private void setupNotesList() {
-        adapter = new ItemAdapter(this, gridView);
+        adapter = new ItemAdapter(this, viewMode);
         listView.setAdapter(adapter);
         listView.setItemAnimator(null);
-        if (gridView) {
+        if (viewMode == ViewModeSetting.GRID) {
             final int spanCount = getResources().getInteger(R.integer.grid_view_span_count);
             final var gridLayoutManager = new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
             listView.setLayoutManager(gridLayoutManager);
@@ -512,7 +514,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
                             }
         );
 
-        itemTouchHelper = new NotesListViewItemTouchHelper(this, mainViewModel, this, tracker, adapter, swipeRefreshLayout, coordinatorLayout, gridView);
+        itemTouchHelper = new NotesListViewItemTouchHelper(this, mainViewModel, this, tracker, adapter, swipeRefreshLayout, coordinatorLayout, viewMode);
         itemTouchHelper.attachToRecyclerView(listView);
     }
 
