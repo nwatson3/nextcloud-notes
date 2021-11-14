@@ -27,8 +27,10 @@ import it.niedermann.owncloud.notes.databinding.ItemNotesListNoteItemGridOnlyTit
 import it.niedermann.owncloud.notes.databinding.ItemNotesListNoteItemWithExcerptBinding;
 import it.niedermann.owncloud.notes.databinding.ItemNotesListNoteItemWithoutExcerptBinding;
 import it.niedermann.owncloud.notes.databinding.ItemNotesListSectionItemBinding;
+import it.niedermann.owncloud.notes.databinding.ItemNotesListNoteItemCompactBinding;
 import it.niedermann.owncloud.notes.main.items.grid.NoteViewGridHolder;
 import it.niedermann.owncloud.notes.main.items.grid.NoteViewGridHolderOnlyTitle;
+import it.niedermann.owncloud.notes.main.items.list.NoteViewHolderCompact;
 import it.niedermann.owncloud.notes.main.items.list.NoteViewHolderWithExcerpt;
 import it.niedermann.owncloud.notes.main.items.list.NoteViewHolderWithoutExcerpt;
 import it.niedermann.owncloud.notes.main.items.section.SectionItem;
@@ -119,7 +121,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     throw new IllegalArgumentException("Not supported viewType: " + viewType);
                 }
             }
-        } else {
+        } else if(viewMode == ViewModeSetting.LIST) {
             switch (viewType) {
                 case TYPE_SECTION: {
                     return new SectionViewHolder(ItemNotesListSectionItemBinding.inflate(inflater));
@@ -130,6 +132,20 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 case TYPE_NOTE_ONLY_TITLE:
                 case TYPE_NOTE_WITHOUT_EXCERPT: {
                     return new NoteViewHolderWithoutExcerpt(ItemNotesListNoteItemWithoutExcerptBinding.inflate(inflater, parent, false), noteClickListener);
+                }
+                default: {
+                    throw new IllegalArgumentException("Not supported viewType: " + viewType);
+                }
+            }
+        } else {
+            switch (viewType) {
+                case TYPE_SECTION: {
+                    return new SectionViewHolder(ItemNotesListSectionItemBinding.inflate(inflater));
+                }
+                case TYPE_NOTE_WITH_EXCERPT:
+                case TYPE_NOTE_ONLY_TITLE:
+                case TYPE_NOTE_WITHOUT_EXCERPT: {
+                    return new NoteViewHolderCompact(ItemNotesListNoteItemCompactBinding.inflate(inflater, parent, false), noteClickListener);
                 }
                 default: {
                     throw new IllegalArgumentException("Not supported viewType: " + viewType);
