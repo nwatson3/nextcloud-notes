@@ -156,7 +156,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
         viewMode = getViewMode();
         //gridView = isGridViewEnabled();
 
-        if (!(viewMode == ViewModeSetting.GRID) || isDarkThemeActive(this)) {
+        if (viewMode != ViewModeSetting.GRID || isDarkThemeActive(this)) {
             activityBinding.activityNotesListView.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
         }
 

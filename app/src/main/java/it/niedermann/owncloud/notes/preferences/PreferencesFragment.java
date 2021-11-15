@@ -28,11 +28,8 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Bra
     private BrandedSwitchPreference fontPref;
     private BrandedSwitchPreference lockPref;
     private BrandedSwitchPreference wifiOnlyPref;
-    //private BrandedSwitchPreference gridViewPref;
     private BrandedSwitchPreference preventScreenCapturePref;
     private BrandedSwitchPreference backgroundSyncPref;
-
-    private ListPreference viewPref;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -42,20 +39,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Bra
 
         fontPref = findPreference(getString(R.string.pref_key_font));
 
-        //gridViewPref = findPreference(getString(R.string.pref_key_gridview));
-        //if (gridViewPref != null) {
-        //    gridViewPref.setOnPreferenceChangeListener((Preference preference, Object newValue) -> {
-        //        final Boolean gridView = (Boolean) newValue;
-        //        Log.v(TAG, "gridView: " + gridView);
-        //        viewModel.resultCode$.setValue(Activity.RESULT_OK);
-        //        NotesApplication.updateGridViewEnabled(gridView);
-        //        return true;
-        //    });
-        //} else {
-        //    Log.e(TAG, "Could not find preference with key: \"" + getString(R.string.pref_key_gridview) + "\"");
-        //}
-
-        viewPref = findPreference(getString(R.string.pref_key_view_mode));
+        ListPreference viewPref = findPreference(getString(R.string.pref_key_view_mode));
         if (viewPref != null) {
             viewPref.setOnPreferenceChangeListener((Preference preference, Object newValue) -> {
                 final ViewModeSetting viewMode = ViewModeSetting.createFromString(getContext(), (String) newValue);
