@@ -1,12 +1,10 @@
 package it.niedermann.owncloud.notes.preferences;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.ListPreference;
@@ -60,7 +58,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Bra
         viewPref = findPreference(getString(R.string.pref_key_view_mode));
         if (viewPref != null) {
             viewPref.setOnPreferenceChangeListener((Preference preference, Object newValue) -> {
-                final ViewModeSetting viewMode = ViewModeSetting.createFromId(getContext(), (String) newValue);
+                final ViewModeSetting viewMode = ViewModeSetting.createFromString(getContext(), (String) newValue);
                 NotesApplication.updateViewMode(viewMode);
                 return true;
             });

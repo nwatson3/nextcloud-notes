@@ -6,19 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import it.niedermann.owncloud.notes.R;
-import it.niedermann.owncloud.notes.databinding.ItemNotesListNoteItemWithExcerptBinding;
-import it.niedermann.owncloud.notes.main.items.NoteViewHolder;
-import it.niedermann.owncloud.notes.persistence.entity.Note;
-import it.niedermann.owncloud.notes.shared.model.DBStatus;
-import it.niedermann.owncloud.notes.shared.model.NoteClickListener;
-
-import android.content.Context;
-import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.databinding.ItemNotesListNoteItemCompactBinding;
 import it.niedermann.owncloud.notes.main.items.NoteViewHolder;
 import it.niedermann.owncloud.notes.persistence.entity.Note;

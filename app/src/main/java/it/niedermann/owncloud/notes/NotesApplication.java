@@ -2,7 +2,6 @@ package it.niedermann.owncloud.notes;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.util.Log;
 
@@ -32,7 +31,7 @@ public class NotesApplication extends Application {
         final var prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         lockedPreference = prefs.getBoolean(getString(R.string.pref_key_lock), false);
         //isGridViewEnabled = getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_key_gridview), false);
-        viewMode = ViewModeSetting.createFromId(this, getDefaultSharedPreferences(this).getString(getString(R.string.pref_key_view_mode), "list"));
+        viewMode = ViewModeSetting.createFromString(this, getDefaultSharedPreferences(this).getString(getString(R.string.pref_key_view_mode), "list"));
         super.onCreate();
     }
 

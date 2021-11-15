@@ -9,13 +9,16 @@ public enum ViewModeSetting {
     LIST,
     COMPACT_LIST;
 
-    public static ViewModeSetting createFromId(Context context, String id)
+    public static ViewModeSetting createFromString(Context context, String str)
     {
-            if(context.getString(R.string.pref_view_mode_grid).equals(id))
+            if(context.getString(R.string.pref_view_mode_grid).equals(str)) {
                 return GRID;
-            else if(context.getString(R.string.pref_view_mode_list).equals(id))
+            }
+            else if(context.getString(R.string.pref_view_mode_list).equals(str)) {
                 return LIST;
-            else
+            }
+            else {
                 return COMPACT_LIST;
+            }
     }
 }
