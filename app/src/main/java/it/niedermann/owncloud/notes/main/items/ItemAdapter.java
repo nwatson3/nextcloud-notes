@@ -71,7 +71,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public <T extends Context & NoteClickListener> ItemAdapter(@NonNull T context, ViewModeSetting viewMode) {
         this.noteClickListener = context;
         this.viewMode = viewMode;
-        //this.gridView = gridView;
         this.mainColor = ContextCompat.getColor(context, R.color.defaultBrand);
         this.textColor = Color.WHITE;
         final var sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());

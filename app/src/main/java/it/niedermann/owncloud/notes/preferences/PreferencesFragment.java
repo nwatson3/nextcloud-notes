@@ -117,7 +117,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Bra
         fontPref.applyBrand(mainColor, textColor);
         lockPref.applyBrand(mainColor, textColor);
         wifiOnlyPref.applyBrand(mainColor, textColor);
-        //gridViewPref.applyBrand(mainColor, textColor);
         preventScreenCapturePref.applyBrand(mainColor, textColor);
         backgroundSyncPref.applyBrand(mainColor, textColor);
     }
