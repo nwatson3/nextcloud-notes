@@ -61,7 +61,7 @@
 
         <TextView
             android:id="@+id/noteTitle"
-            android:layout_width="0dp"
+            android:layout_width="222dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="0sp"
             android:layout_marginBottom="0sp"
@@ -72,6 +72,25 @@
             android:paddingBottom="@dimen/spacer_1x"
             android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/primary_font_size"
+            tools:text="@tools:sample/lorem/random" />
+
+        <TextView
+            android:id="@+id/noteCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacer_1x"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="@dimen/spacer_2x"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:maxLines="1"
+            android:paddingStart="@dimen/spacer_1x"
+            android:paddingEnd="@dimen/spacer_1x"
+            android:paddingBottom="1dp"
+            android:singleLine="true"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/secondary_font_size"
+            tools:maxLength="15"
             tools:text="@tools:sample/lorem/random" />
 
     </LinearLayout>
