@@ -59,6 +59,7 @@ public class NoteViewHolderCompact extends NoteViewHolder {
     }
 
     /**
+     * Determine whether NoteViewHolder is swipeable
      * @return Whether left/right swiping is enabled for this list item
      */
     @NonNull
