@@ -23,7 +23,7 @@ public class ImportAccountViewModel extends AndroidViewModel {
         this.repo = NotesRepository.getInstance(application);
     }
 
-    public LiveData<ImportStatus> addAccount(@NonNull String url, @NonNull String username, @NonNull String accountName, @NonNull Capabilities capabilities, @Nullable String displayName, @NonNull IResponseCallback<Account> callback) {
-        return repo.addAccount(url, username, accountName, capabilities, displayName, callback);
+    public LiveData<ImportStatus> addAccount(@NonNull String url, @NonNull String username, @NonNull String accountName, @NonNull Capabilities capabilities, @Nullable String displayName, @NonNull IResponseCallback<Account> callback, boolean offline) {
+        return repo.addAccount(url, username, accountName, capabilities, displayName, callback, offline);
     }
 }

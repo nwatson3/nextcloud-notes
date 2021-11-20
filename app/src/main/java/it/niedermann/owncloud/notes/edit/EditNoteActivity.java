@@ -62,7 +62,7 @@ public class EditNoteActivity extends LockedActivity implements BaseNoteFragment
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        try {
+        /*try {
             if (SingleAccountHelper.getCurrentSingleSignOnAccount(this) == null) {
                 throw new NoCurrentAccountSelectedException();
             }
@@ -70,7 +70,7 @@ public class EditNoteActivity extends LockedActivity implements BaseNoteFragment
             Toast.makeText(this, R.string.no_account_configured_yet, Toast.LENGTH_LONG).show();
             finish();
             return;
-        }
+        }*/
 
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         binding = ActivityEditBinding.inflate(getLayoutInflater());

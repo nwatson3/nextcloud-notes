@@ -1,7 +1,9 @@
 package it.niedermann.owncloud.notes.importaccount;
 
 import android.accounts.NetworkErrorException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +41,7 @@ import it.niedermann.owncloud.notes.shared.model.IResponseCallback;
 public class ImportAccountActivity extends AppCompatActivity {
 
     private static final String TAG = ImportAccountActivity.class.getSimpleName();
-    public static final int REQUEST_CODE_IMPORT_ACCOUNT = 1;
+    public static final int REQUEST_CODE_IMPORT_ACCOUNT = 1337;
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -75,6 +77,21 @@ public class ImportAccountActivity extends AppCompatActivity {
         });
         binding.useOfflineButton.setOnClickListener((v) -> {
 
+            SharedPreferences sharedPref = getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("current_account", "offline_account");
+            editor.apply();
+            importAccountViewModel.addAccount("", "", "offline_account", new Capabilities(), "Offline Account", new IResponseCallback<Account>() {
+                @Override
+                public void onSuccess(Account result) {
+                    Log.i("nwatson3", "success");
+                }
+
+                @Override
+                public void onError(@NonNull Throwable t) {
+                    Log.i("nwatson3", "error");
+                }
+            }, true);
         });
     }
 
@@ -88,13 +105,14 @@ public class ImportAccountActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i("nwatson3", "ImportAccountActivity onActivityResult resultCode=" + resultCode);
         try {
             AccountImporter.onActivityResult(requestCode, resultCode, data, ImportAccountActivity.this, ssoAccount -> {
                 runOnUiThread(() -> binding.progressCircular.setVisibility(View.VISIBLE));
 
                 SingleAccountHelper.setCurrentAccount(getApplicationContext(), ssoAccount.name);
                 executor.submit(() -> {
-                    Log.i(TAG, "Added account: " + "name:" + ssoAccount.name + ", " + ssoAccount.url + ", userId" + ssoAccount.userId);
+                    Log.i("nwatson3", "Added account1: " + "name:" + ssoAccount.name + ", " + ssoAccount.url + ", userId" + ssoAccount.userId);
                     try {
                         Log.i(TAG, "Loading capabilities for " + ssoAccount.name);
                         final var capabilities = CapabilitiesClient.getCapabilities(getApplicationContext(), ssoAccount, null, ApiProvider.getInstance());
@@ -125,7 +143,7 @@ public class ImportAccountActivity extends AppCompatActivity {
                                     ExceptionDialogFragment.newInstance(t).show(getSupportFragmentManager(), ExceptionDialogFragment.class.getSimpleName());
                                 });
                             }
-                        });
+                        }, false);
                         runOnUiThread(() -> status$.observe(ImportAccountActivity.this, (status) -> {
                             binding.progressText.setVisibility(View.VISIBLE);
                             Log.v(TAG, "Status: " + status.count + " of " + status.total);

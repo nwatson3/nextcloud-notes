@@ -128,6 +128,8 @@
     <string name="pref_value_wifi_and_mobile">Sync on Wi-Fi and mobile data</string>
     <string name="pref_value_lock">Password protection</string>
 
+    <string name="pref_file_key">it.niedermann.owncloud.notes.PREFERENCE_FILE_KEY</string>
+
     <string name="simple_error">Error</string>
     <string name="simple_close">Close</string>
     <string name="simple_copy">Copy</string>

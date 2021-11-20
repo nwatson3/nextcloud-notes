@@ -168,8 +168,14 @@ public class NotesRepository {
     // Accounts
 
     @AnyThread
-    public LiveData<ImportStatus> addAccount(@NonNull String url, @NonNull String username, @NonNull String accountName, @NonNull Capabilities capabilities, @Nullable String displayName, @NonNull IResponseCallback<Account> callback) {
+    public LiveData<ImportStatus> addAccount(@NonNull String url, @NonNull String username, @NonNull String accountName, @NonNull Capabilities capabilities, @Nullable String displayName, @NonNull IResponseCallback<Account> callback, boolean offline) {
         final var account = db.getAccountDao().getAccountById(db.getAccountDao().insert(new Account(url, username, accountName, displayName, capabilities)));
+        Log.i("nwatson3", "test1");
+        if(offline)
+        {
+            Log.i("nwatson3", "test2");
+            return new MutableLiveData<>(new ImportStatus());
+        }
         if (account == null) {
             callback.onError(new Exception("Could not read created account."));
         } else {
