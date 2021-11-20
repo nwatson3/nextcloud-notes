@@ -31,6 +31,7 @@ import it.niedermann.owncloud.notes.branding.BrandingUtil;
 import it.niedermann.owncloud.notes.databinding.ActivityImportAccountBinding;
 import it.niedermann.owncloud.notes.exception.ExceptionDialogFragment;
 import it.niedermann.owncloud.notes.exception.ExceptionHandler;
+import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.ApiProvider;
 import it.niedermann.owncloud.notes.persistence.CapabilitiesClient;
 import it.niedermann.owncloud.notes.persistence.SyncWorker;
@@ -41,7 +42,7 @@ import it.niedermann.owncloud.notes.shared.model.IResponseCallback;
 public class ImportAccountActivity extends AppCompatActivity {
 
     private static final String TAG = ImportAccountActivity.class.getSimpleName();
-    public static final int REQUEST_CODE_IMPORT_ACCOUNT = 1337;
+    public static final int REQUEST_CODE_IMPORT_ACCOUNT = 1;
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -77,10 +78,7 @@ public class ImportAccountActivity extends AppCompatActivity {
         });
         binding.useOfflineButton.setOnClickListener((v) -> {
 
-            SharedPreferences sharedPref = getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("current_account", "offline_account");
-            editor.apply();
+            AccountHelper.setCurrentAccount("offline_account");
             importAccountViewModel.addAccount("", "", "offline_account", new Capabilities(), "Offline Account", new IResponseCallback<Account>() {
                 @Override
                 public void onSuccess(Account result) {
@@ -91,7 +89,7 @@ public class ImportAccountActivity extends AppCompatActivity {
                 public void onError(@NonNull Throwable t) {
                     Log.i("nwatson3", "error");
                 }
-            }, true);
+            });
         });
     }
 
@@ -143,7 +141,7 @@ public class ImportAccountActivity extends AppCompatActivity {
                                     ExceptionDialogFragment.newInstance(t).show(getSupportFragmentManager(), ExceptionDialogFragment.class.getSimpleName());
                                 });
                             }
-                        }, false);
+                        });
                         runOnUiThread(() -> status$.observe(ImportAccountActivity.this, (status) -> {
                             binding.progressText.setVisibility(View.VISIBLE);
                             Log.v(TAG, "Status: " + status.count + " of " + status.total);
