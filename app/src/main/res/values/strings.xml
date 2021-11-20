@@ -325,6 +325,7 @@
     <string name="no_account_configured_yet">No account configured yet</string>
     <string name="no_other_accounts">You don\'t have configured any other accounts yet.</string>
     <string name="choose_account">Choose account</string>
+    <string name="use_offline">Use offline</string>
     <string name="context_based_formatting">Context based formatting popover</string>
     <plurals name="remove_account_message">
         <item quantity="one">Removing the account %1$s will also delete irrecoverable one unsynchronized change.</item>

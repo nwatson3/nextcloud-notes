@@ -73,6 +73,9 @@ public class ImportAccountActivity extends AppCompatActivity {
                 AccountImporter.requestAndroidAccountPermissionsAndPickAccount(this);
             }
         });
+        binding.useOfflineButton.setOnClickListener((v) -> {
+
+        });
     }
 
     @Override
