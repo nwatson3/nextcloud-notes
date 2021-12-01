@@ -173,28 +173,36 @@ public class NotesRepository {
         if (account == null) {
             callback.onError(new Exception("Could not read created account."));
         } else {
-            if (isSyncPossible()) {
-                syncActive.put(account.getId(), true);
-                try {
-                    Log.d(TAG, "… starting now");
-                    final NotesImportTask importTask = new NotesImportTask(context, this, account, importExecutor, apiProvider);
-                    return importTask.importNotes(new IResponseCallback<>() {
-                        @Override
-                        public void onSuccess(Void result) {
-                            callback.onSuccess(account);
-                        }
+            if(!accountName.equals("offline_account"))
+            {
+                if (isSyncPossible()) {
+                    syncActive.put(account.getId(), true);
+                    try {
+                        Log.d(TAG, "… starting now");
+                        final NotesImportTask importTask = new NotesImportTask(context, this, account, importExecutor, apiProvider);
+                        Log.d(TAG, "test abc");
+                        return importTask.importNotes(new IResponseCallback<>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                callback.onSuccess(account);
+                            }
 
-                        @Override
-                        public void onError(@NonNull Throwable t) {
-                            callback.onError(t);
-                        }
-                    });
-                } catch (NextcloudFilesAppAccountNotFoundException e) {
-                    Log.e(TAG, "… Could not find " + SingleSignOnAccount.class.getSimpleName() + " for account name " + account.getAccountName());
-                    callback.onError(e);
+                            @Override
+                            public void onError(@NonNull Throwable t) {
+                                callback.onError(t);
+                            }
+                        });
+                    } catch (NextcloudFilesAppAccountNotFoundException e) {
+                        Log.e(TAG, "… Could not find " + SingleSignOnAccount.class.getSimpleName() + " for account name " + account.getAccountName());
+                        callback.onError(e);
+                    }
+                } else {
+                    callback.onError(new NetworkErrorException());
                 }
-            } else {
-                callback.onError(new NetworkErrorException());
+            }
+            else
+            {
+                callback.onSuccess(account);
             }
         }
         return new MutableLiveData<>(new ImportStatus());
@@ -804,7 +812,7 @@ public class NotesRepository {
                 syncActive.put(account.getId(), false);
             }
             Log.d(TAG, "Sync requested (" + (onlyLocalChanges ? "onlyLocalChanges" : "full") + "; " + (Boolean.TRUE.equals(syncActive.get(account.getId())) ? "sync active" : "sync NOT active") + ") ...");
-            if (isSyncPossible() && (!Boolean.TRUE.equals(syncActive.get(account.getId())) || onlyLocalChanges)) {
+            if (isSyncPossible() && (!Boolean.TRUE.equals(syncActive.get(account.getId())) || onlyLocalChanges) && !account.getAccountName().equals("offline_account")) {
                 syncActive.put(account.getId(), true);
                 try {
                     Log.d(TAG, "... starting now");

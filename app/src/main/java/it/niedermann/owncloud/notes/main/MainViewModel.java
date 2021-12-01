@@ -427,8 +427,11 @@ public class MainViewModel extends AndroidViewModel {
                         callback.onError(t);
                     }
                 } catch (NextcloudFilesAppAccountNotFoundException e) {
-                    repo.deleteAccount(localAccount);
-                    callback.onError(e);
+                    if(!localAccount.getAccountName().equals("offline_account"))
+                    {
+                        repo.deleteAccount(localAccount);
+                        callback.onError(e);
+                    }
                 }
             } else {
                 if (repo.isNetworkConnected() && repo.isSyncOnlyOnWifi()) {

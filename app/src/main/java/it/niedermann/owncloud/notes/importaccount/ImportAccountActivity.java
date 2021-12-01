@@ -49,6 +49,8 @@ public class ImportAccountActivity extends AppCompatActivity {
     private ImportAccountViewModel importAccountViewModel;
     private ActivityImportAccountBinding binding;
 
+    public static final int CHOOSE_ACCOUNT_SSO = 4242;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +79,18 @@ public class ImportAccountActivity extends AppCompatActivity {
             }
         });
         binding.useOfflineButton.setOnClickListener((v) -> {
+            binding.useOfflineButton.setEnabled(false);
+            binding.status.setVisibility(View.GONE);
 
             AccountHelper.setCurrentAccount("offline_account");
-            importAccountViewModel.addAccount("", "", "offline_account", new Capabilities(), "Offline Account", new IResponseCallback<Account>() {
+            final var status$ = importAccountViewModel.addAccount("", "", "offline_account", new Capabilities(), "Offline Account", new IResponseCallback<Account>() {
                 @Override
                 public void onSuccess(Account result) {
                     Log.i("nwatson3", "success");
+                    //SyncWorker.update(ImportAccountActivity.this, PreferenceManager.getDefaultSharedPreferences(ImportAccountActivity.this)
+                    //.getBoolean(getString(R.string.pref_key_background_sync), true));
+                    setResult(RESULT_OK);
+                    finish();
                 }
 
                 @Override
@@ -90,6 +98,16 @@ public class ImportAccountActivity extends AppCompatActivity {
                     Log.i("nwatson3", "error");
                 }
             });
+            runOnUiThread(() -> status$.observe(ImportAccountActivity.this, (status) -> {
+                binding.progressText.setVisibility(View.VISIBLE);
+                Log.v(TAG, "Status: " + status.count + " of " + status.total);
+                if(status.count > 0) {
+                    binding.progressCircular.setIndeterminate(false);
+                }
+                binding.progressText.setText(getString(R.string.progress_import, status.count + 1, status.total));
+                binding.progressCircular.setProgress(status.count);
+                binding.progressCircular.setMax(status.total);
+            }));
         });
     }
 
@@ -105,10 +123,13 @@ public class ImportAccountActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Log.i("nwatson3", "ImportAccountActivity onActivityResult resultCode=" + resultCode);
         try {
+            Log.i("nwatson3", "test");
+
             AccountImporter.onActivityResult(requestCode, resultCode, data, ImportAccountActivity.this, ssoAccount -> {
                 runOnUiThread(() -> binding.progressCircular.setVisibility(View.VISIBLE));
 
-                SingleAccountHelper.setCurrentAccount(getApplicationContext(), ssoAccount.name);
+                AccountHelper.setCurrentAccount(ssoAccount.name);
+                //SingleAccountHelper.setCurrentAccount(getApplicationContext(), ssoAccount.name);
                 executor.submit(() -> {
                     Log.i("nwatson3", "Added account1: " + "name:" + ssoAccount.name + ", " + ssoAccount.url + ", userId" + ssoAccount.userId);
                     try {

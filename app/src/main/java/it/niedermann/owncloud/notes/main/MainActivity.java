@@ -164,15 +164,18 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
         setupNavigationList();
         setupNotesList();
 
+        AccountHelper.init(this.getApplication());
+
         mainViewModel.getAccountsCount().observe(this, (count) -> {
             if (count == 0) {
                 startActivityForResult(new Intent(this, ImportAccountActivity.class), ImportAccountActivity.REQUEST_CODE_IMPORT_ACCOUNT);
             } else {
                 executor.submit(() -> {
-                    try {
-                        final var account = mainViewModel.getLocalAccountByAccountName(SingleAccountHelper.getCurrentSingleSignOnAccount(getApplicationContext()).name);
+                    //try {
+                        //final var account = mainViewModel.getLocalAccountByAccountName(SingleAccountHelper.getCurrentSingleSignOnAccount(getApplicationContext()).name);
+                        final var account = mainViewModel.getLocalAccountByAccountName(AccountHelper.getCurrentAccount().getAccountName());
                         runOnUiThread(() -> mainViewModel.postCurrentAccount(account));
-                    } catch (NextcloudFilesAppAccountNotFoundException e) {
+                    /*} catch (NextcloudFilesAppAccountNotFoundException e) {
                         // Verbose log output for https://github.com/stefan-niedermann/nextcloud-notes/issues/1256
                         runOnUiThread(() -> new AlertDialog.Builder(this)
                                 .setTitle(NextcloudFilesAppAccountNotFoundException.class.getSimpleName())
@@ -208,6 +211,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
                     } catch (NoCurrentAccountSelectedException e) {
                         runOnUiThread(() -> ExceptionDialogFragment.newInstance(e).show(getSupportFragmentManager(), ExceptionDialogFragment.class.getSimpleName()));
                     }
+                    */
                 });
             }
         });
@@ -359,9 +363,9 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
         final var accountLiveData = mainViewModel.getCurrentAccount();
         accountLiveData.observe(this, (currentAccount) -> {
             accountLiveData.removeObservers(this);
-            try {
+            //try {
                 // It is possible that after the deletion of the last account, this onResponse gets called before the ImportAccountActivity gets started.
-                if (SingleAccountHelper.getCurrentSingleSignOnAccount(this) != null) {
+                //if (SingleAccountHelper.getCurrentSingleSignOnAccount(this) != null) {
                     mainViewModel.synchronizeNotes(currentAccount, new IResponseCallback<Void>() {
                         @Override
                         public void onSuccess(Void v) {
@@ -373,12 +377,12 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
                             t.printStackTrace();
                         }
                     });
-                }
-            } catch (NextcloudFilesAppAccountNotFoundException e) {
-                ExceptionDialogFragment.newInstance(e).show(getSupportFragmentManager(), ExceptionDialogFragment.class.getSimpleName());
-            } catch (NoCurrentAccountSelectedException e) {
-                Log.i(TAG, "No current account is selected - maybe the last account has been deleted?");
-            }
+                //}
+            //} catch (NextcloudFilesAppAccountNotFoundException e) {
+            //    ExceptionDialogFragment.newInstance(e).show(getSupportFragmentManager(), ExceptionDialogFragment.class.getSimpleName());
+            //} catch (NoCurrentAccountSelectedException e) {
+            //    Log.i(TAG, "No current account is selected - maybe the last account has been deleted?");
+            //}
         });
         super.onResume();
     }

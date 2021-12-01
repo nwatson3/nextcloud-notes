@@ -1,5 +1,6 @@
 package it.niedermann.owncloud.notes.main;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -14,10 +15,10 @@ import it.niedermann.owncloud.notes.persistence.entity.Account;
  */
 public class AccountHelper {
 
-    private static NotesApplication app = null;
+    private static Application app = null;
     private static NotesRepository repo = null;
 
-    public static void init(NotesApplication application)
+    public static void init(Application application)
     {
         app = application;
         repo = NotesRepository.getInstance(application);
@@ -32,6 +33,7 @@ public class AccountHelper {
     }
     public static void setCurrentAccount(String accountName)
     {
+        assert(app != null);
         SharedPreferences sharedPref = app.getSharedPreferences(app.getString(R.string.pref_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("current_account", accountName);
