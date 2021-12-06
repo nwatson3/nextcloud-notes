@@ -44,6 +44,7 @@ import it.niedermann.android.sharedpreferences.SharedPreferenceIntLiveData;
 import it.niedermann.owncloud.notes.BuildConfig;
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.edit.EditNoteActivity;
+import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.persistence.entity.CategoryOptions;
 import it.niedermann.owncloud.notes.persistence.entity.CategoryWithNotesCount;
@@ -410,7 +411,8 @@ public class NotesRepository {
     @NonNull
     @MainThread
     public LiveData<Note> addNoteAndSync(Account account, Note note) {
-        final var entity = new Note(0, null, note.getModified(), note.getTitle(), note.getContent(), note.getCategory(), note.getFavorite(), note.getETag(), DBStatus.LOCAL_EDITED, account.getId(), generateNoteExcerpt(note.getContent(), note.getTitle()), 0);
+        DBStatus status = AccountHelper.getCurrentAccount().getAccountName().equals("offline_account") ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
+        final var entity = new Note(0, null, note.getModified(), note.getTitle(), note.getContent(), note.getCategory(), note.getFavorite(), note.getETag(), status, account.getId(), generateNoteExcerpt(note.getContent(), note.getTitle()), 0);
         final var ret = new MutableLiveData<Note>();
         executor.submit(() -> ret.postValue(addNote(account.getId(), entity)));
         return map(ret, newNote -> {
@@ -460,7 +462,14 @@ public class NotesRepository {
     @AnyThread
     public void toggleFavoriteAndSync(Account account, long noteId) {
         executor.submit(() -> {
-            db.getNoteDao().toggleFavorite(noteId);
+            if(account.getAccountName().equals("offline_account"))
+            {
+                db.getNoteDao().toggleFavoriteOffline(noteId);
+            }
+            else
+            {
+                db.getNoteDao().toggleFavorite(noteId);
+            }
             scheduleSync(account, true);
         });
     }
@@ -477,7 +486,8 @@ public class NotesRepository {
     @AnyThread
     public void setCategory(@NonNull Account account, long noteId, @NonNull String category) {
         executor.submit(() -> {
-            db.getNoteDao().updateStatus(noteId, DBStatus.LOCAL_EDITED);
+            DBStatus status = account.getAccountName().equals("offline_account") ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
+            db.getNoteDao().updateStatus(noteId, status);
             db.getNoteDao().updateCategory(noteId, category);
             scheduleSync(account, true);
         });
@@ -514,7 +524,8 @@ public class NotesRepository {
                     title = oldNote.getTitle();
                 }
             }
-            newNote = new Note(oldNote.getId(), remoteId, Calendar.getInstance(), title, newContent, oldNote.getCategory(), oldNote.getFavorite(), oldNote.getETag(), DBStatus.LOCAL_EDITED, localAccount.getId(), generateNoteExcerpt(newContent, title), oldNote.getScrollY());
+            DBStatus status = AccountHelper.getCurrentAccount().getAccountName().equals("offline_account") ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
+            newNote = new Note(oldNote.getId(), remoteId, Calendar.getInstance(), title, newContent, oldNote.getCategory(), oldNote.getFavorite(), oldNote.getETag(), status, localAccount.getId(), generateNoteExcerpt(newContent, title), oldNote.getScrollY());
         }
         int rows = db.getNoteDao().updateNote(newNote);
         // if data was changed, set new status and schedule sync (with callback); otherwise invoke callback directly.
@@ -812,7 +823,24 @@ public class NotesRepository {
                 syncActive.put(account.getId(), false);
             }
             Log.d(TAG, "Sync requested (" + (onlyLocalChanges ? "onlyLocalChanges" : "full") + "; " + (Boolean.TRUE.equals(syncActive.get(account.getId())) ? "sync active" : "sync NOT active") + ") ...");
-            if (isSyncPossible() && (!Boolean.TRUE.equals(syncActive.get(account.getId())) || onlyLocalChanges) && !account.getAccountName().equals("offline_account")) {
+            //TODO
+            if(account.getAccountName().equals("offline_account"))
+            {
+                Log.d(TAG, "... do nothing");
+                if (callbacksPush.containsKey(account.getId()) && callbacksPush.get(account.getId()) != null) {
+                    final var callbacks = callbacksPush.get(account.getId());
+                    if (callbacks != null) {
+                        for (final var callback : callbacks) {
+                            callback.onScheduled();
+                        }
+                    } else {
+                        Log.w(TAG, "List of push-callbacks was set for account \"" + account.getAccountName() + "\" but it was null");
+                    }
+                }
+                //syncStatus.postValue(true);
+                //syncStatus.postValue(false);
+            }
+            else if (isSyncPossible() && (!Boolean.TRUE.equals(syncActive.get(account.getId())) || onlyLocalChanges)) {
                 syncActive.put(account.getId(), true);
                 try {
                     Log.d(TAG, "... starting now");

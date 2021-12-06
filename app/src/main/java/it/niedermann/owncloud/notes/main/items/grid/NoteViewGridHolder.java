@@ -43,7 +43,7 @@ public class NoteViewGridHolder extends NoteViewHolder {
         super.bind(isSelected, note, showCategory, mainColor, textColor, searchQuery);
         @NonNull final Context context = itemView.getContext();
         bindCategory(context, binding.noteCategory, showCategory, note.getCategory(), mainColor);
-        bindStatus(binding.noteStatus, note.getStatus(), mainColor);
+        bindStatus(binding.noteStatus, binding.noteOfflineStatus, note.getStatus(), mainColor);
         bindFavorite(binding.noteFavorite, note.getFavorite());
         bindSearchableContent(context, binding.noteTitle, searchQuery, note.getTitle(), mainColor);
         bindSearchableContent(context, binding.noteExcerpt, searchQuery, note.getExcerpt().replace(EXCERPT_LINE_SEPARATOR, "\n"), mainColor);

@@ -27,6 +27,7 @@ import com.nextcloud.android.sso.helper.SingleAccountHelper;
 
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.databinding.FragmentNotePreviewBinding;
+import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
 import it.niedermann.owncloud.notes.shared.util.SSOUtil;
@@ -153,23 +154,30 @@ public class NotePreviewFragment extends SearchableBaseNoteFragment implements O
 
     @Override
     public void onRefresh() {
-        if (noteLoaded && repo.isSyncPossible() && SSOUtil.isConfigured(getContext())) {
+        if(AccountHelper.getCurrentAccount().getAccountName().equals("offline_account"))
+        {
+            binding.swiperefreshlayout.setRefreshing(false);
+        }
+        //else if (noteLoaded && repo.isSyncPossible() && SSOUtil.isConfigured(getContext())) {
+        else if (noteLoaded && repo.isSyncPossible()) {
             binding.swiperefreshlayout.setRefreshing(true);
             executor.submit(() -> {
-                try {
-                    final var account = repo.getAccountByName(SingleAccountHelper.getCurrentSingleSignOnAccount(requireContext()).name);
-                    repo.addCallbackPull(account, () -> executor.submit(() -> {
-                        note = repo.getNoteById(note.getId());
-                        changedText = note.getContent();
-                        requireActivity().runOnUiThread(() -> {
-                            binding.singleNoteContent.setMarkdownString(note.getContent());
-                            binding.swiperefreshlayout.setRefreshing(false);
-                        });
-                    }));
-                    repo.scheduleSync(account, false);
-                } catch (NextcloudFilesAppAccountNotFoundException | NoCurrentAccountSelectedException e) {
-                    e.printStackTrace();
-                }
+                //try {
+                    //TODO
+                    //final var account = repo.getAccountByName(SingleAccountHelper.getCurrentSingleSignOnAccount(requireContext()).name);
+                    final var account = repo.getAccountByName(AccountHelper.getCurrentAccount().getAccountName());
+                        repo.addCallbackPull(account, () -> executor.submit(() -> {
+                            note = repo.getNoteById(note.getId());
+                            changedText = note.getContent();
+                            requireActivity().runOnUiThread(() -> {
+                                binding.singleNoteContent.setMarkdownString(note.getContent());
+                                binding.swiperefreshlayout.setRefreshing(false);
+                            });
+                        }));
+                        repo.scheduleSync(account, false);
+                //} catch (NextcloudFilesAppAccountNotFoundException | NoCurrentAccountSelectedException e) {
+                 //   e.printStackTrace();
+                //}
             });
         } else {
             binding.swiperefreshlayout.setRefreshing(false);

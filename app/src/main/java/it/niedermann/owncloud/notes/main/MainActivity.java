@@ -217,7 +217,10 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
         });
 
         mainViewModel.hasMultipleAccountsConfigured().observe(this, hasMultipleAccountsConfigured -> canMoveNoteToAnotherAccounts = hasMultipleAccountsConfigured);
-        mainViewModel.getSyncStatus().observe(this, syncStatus -> swipeRefreshLayout.setRefreshing(syncStatus));
+        mainViewModel.getSyncStatus().observe(this, syncStatus -> {
+            swipeRefreshLayout.setRefreshing(syncStatus);
+            Log.i("nwatson3", "observed " + syncStatus);
+        });
         mainViewModel.getSyncErrors().observe(this, exceptions -> {
             if (mainViewModel.containsNonInfrastructureRelatedItems(exceptions)) {
                 BrandedSnackbar.make(coordinatorLayout, R.string.error_synchronization, Snackbar.LENGTH_LONG)
@@ -471,6 +474,9 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
                     @Override
                     public void onSuccess(Void v) {
                         Log.d(TAG, "Successfully synchronized capabilities and notes for " + currentAccount.getAccountName());
+                        if(currentAccount.getAccountName().equals("offline_account")) {
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
                     }
 
                     @Override

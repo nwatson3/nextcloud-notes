@@ -45,6 +45,7 @@ import it.niedermann.owncloud.notes.edit.category.CategoryDialogFragment;
 import it.niedermann.owncloud.notes.edit.category.CategoryDialogFragment.CategoryDialogListener;
 import it.niedermann.owncloud.notes.edit.title.EditTitleDialogFragment;
 import it.niedermann.owncloud.notes.edit.title.EditTitleDialogFragment.EditTitleListener;
+import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.NotesRepository;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
@@ -97,9 +98,10 @@ public abstract class BaseNoteFragment extends BrandedFragment implements Catego
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         executor.submit(() -> {
-            try {
-                final var ssoAccount = SingleAccountHelper.getCurrentSingleSignOnAccount(requireContext().getApplicationContext());
-                this.localAccount = repo.getAccountByName(ssoAccount.name);
+            //try {
+                //final var ssoAccount = SingleAccountHelper.getCurrentSingleSignOnAccount(requireContext().getApplicationContext());
+                final var ssoAccount = AccountHelper.getCurrentAccount();
+                this.localAccount = repo.getAccountByName(ssoAccount.getAccountName());
 
                 if (savedInstanceState == null) {
                     final long id = requireArguments().getLong(PARAM_NOTE_ID);
@@ -108,7 +110,8 @@ public abstract class BaseNoteFragment extends BrandedFragment implements Catego
                         if (accountId > 0) {
                             /* Switch account if account id has been provided */
                             this.localAccount = repo.getAccountById(accountId);
-                            SingleAccountHelper.setCurrentAccount(requireContext().getApplicationContext(), localAccount.getAccountName());
+                            //SingleAccountHelper.setCurrentAccount(requireContext().getApplicationContext(), localAccount.getAccountName());
+                            AccountHelper.setCurrentAccount(localAccount.getAccountName());
                         }
                         isNew = false;
                         note = originalNote = repo.getNoteById(id);
@@ -126,7 +129,14 @@ public abstract class BaseNoteFragment extends BrandedFragment implements Catego
                                 requireActivity().invalidateOptionsMenu();
                             }
                         } else {
-                            paramNote.setStatus(DBStatus.LOCAL_EDITED);
+                            if(localAccount.getAccountName().equals("offline_account"))
+                            {
+                                paramNote.setStatus(DBStatus.LOCAL_ONLY);
+                            }
+                            else
+                            {
+                                paramNote.setStatus(DBStatus.LOCAL_EDITED);
+                            }
                             note = repo.addNote(localAccount.getId(), paramNote);
                             originalNote = null;
                             requireActivity().runOnUiThread(() -> onNoteLoaded(note));
@@ -139,9 +149,9 @@ public abstract class BaseNoteFragment extends BrandedFragment implements Catego
                     requireActivity().runOnUiThread(() -> onNoteLoaded(note));
                     requireActivity().invalidateOptionsMenu();
                 }
-            } catch (NextcloudFilesAppAccountNotFoundException | NoCurrentAccountSelectedException e) {
-                e.printStackTrace();
-            }
+            //} catch (NextcloudFilesAppAccountNotFoundException | NoCurrentAccountSelectedException e) {
+            //    e.printStackTrace();
+            //}
         });
         setHasOptionsMenu(true);
     }

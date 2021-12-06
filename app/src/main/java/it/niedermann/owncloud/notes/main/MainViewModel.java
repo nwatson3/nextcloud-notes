@@ -121,7 +121,8 @@ public class MainViewModel extends AndroidViewModel {
     public void postCurrentAccount(@NonNull Account account) {
         state.set(KEY_CURRENT_ACCOUNT, account);
         BrandingUtil.saveBrandColors(getApplication(), account.getColor(), account.getTextColor());
-        SingleAccountHelper.setCurrentAccount(getApplication(), account.getAccountName());
+        //SingleAccountHelper.setCurrentAccount(getApplication(), account.getAccountName());
+        AccountHelper.setCurrentAccount(account.getAccountName());
 
         final var currentAccount = this.currentAccount.getValue();
         // If only ETag or colors change, we must not reset the navigation
@@ -392,6 +393,7 @@ public class MainViewModel extends AndroidViewModel {
             @Override
             public void onError(@NonNull Throwable t) {
                 callback.onError(t);
+                Log.i("nwatson3", "error");
             }
         });
     }
@@ -400,31 +402,44 @@ public class MainViewModel extends AndroidViewModel {
      * Updates the network status if necessary and pulls the latest {@link Capabilities} of the given {@param localAccount}
      */
     public void synchronizeCapabilities(@NonNull Account localAccount, @NonNull IResponseCallback<Void> callback) {
+        Log.i("nwatson3", "test1");
         executor.submit(() -> {
+            Log.i("nwatson3", "test2");
             if (!repo.isSyncPossible()) {
+                Log.i("nwatson3", "test3");
                 repo.updateNetworkStatus();
             }
             if (repo.isSyncPossible()) {
+                Log.i("nwatson3", "test4");
                 try {
-                    final var ssoAccount = AccountImporter.getSingleSignOnAccount(getApplication(), localAccount.getAccountName());
-                    try {
-                        final var capabilities = CapabilitiesClient.getCapabilities(getApplication(), ssoAccount, localAccount.getCapabilitiesETag(), ApiProvider.getInstance());
-                        repo.updateCapabilitiesETag(localAccount.getId(), capabilities.getETag());
-                        repo.updateBrand(localAccount.getId(), capabilities.getColor(), capabilities.getTextColor());
-                        localAccount.setColor(capabilities.getColor());
-                        localAccount.setTextColor(capabilities.getTextColor());
-                        BrandingUtil.saveBrandColors(getApplication(), localAccount.getColor(), localAccount.getTextColor());
-                        repo.updateApiVersion(localAccount.getId(), capabilities.getApiVersion());
-                        callback.onSuccess(null);
-                    } catch (Throwable t) {
-                        if (t.getClass() == NextcloudHttpRequestFailedException.class || t instanceof NextcloudHttpRequestFailedException) {
-                            if (((NextcloudHttpRequestFailedException) t).getStatusCode() == HTTP_NOT_MODIFIED) {
-                                Log.d(TAG, "Server returned HTTP Status Code " + ((NextcloudHttpRequestFailedException) t).getStatusCode() + " - Capabilities not modified.");
-                                callback.onSuccess(null);
-                                return;
+                    Log.i("nwatson3", "test5");
+                    if(!localAccount.getAccountName().equals("offline_account"))
+                    {
+                        final var ssoAccount = AccountImporter.getSingleSignOnAccount(getApplication(), localAccount.getAccountName());
+                        Log.i("nwatson3", "test6");
+                        try {
+                            final var capabilities = CapabilitiesClient.getCapabilities(getApplication(), ssoAccount, localAccount.getCapabilitiesETag(), ApiProvider.getInstance());
+                            repo.updateCapabilitiesETag(localAccount.getId(), capabilities.getETag());
+                            repo.updateBrand(localAccount.getId(), capabilities.getColor(), capabilities.getTextColor());
+                            localAccount.setColor(capabilities.getColor());
+                            localAccount.setTextColor(capabilities.getTextColor());
+                            BrandingUtil.saveBrandColors(getApplication(), localAccount.getColor(), localAccount.getTextColor());
+                            repo.updateApiVersion(localAccount.getId(), capabilities.getApiVersion());
+                            callback.onSuccess(null);
+                        } catch (Throwable t) {
+                            if (t.getClass() == NextcloudHttpRequestFailedException.class || t instanceof NextcloudHttpRequestFailedException) {
+                                if (((NextcloudHttpRequestFailedException) t).getStatusCode() == HTTP_NOT_MODIFIED) {
+                                    Log.d(TAG, "Server returned HTTP Status Code " + ((NextcloudHttpRequestFailedException) t).getStatusCode() + " - Capabilities not modified.");
+                                    callback.onSuccess(null);
+                                    return;
+                                }
                             }
+                            callback.onError(t);
                         }
-                        callback.onError(t);
+                    }
+                    else
+                    {
+                        callback.onSuccess(null);
                     }
                 } catch (NextcloudFilesAppAccountNotFoundException e) {
                     if(!localAccount.getAccountName().equals("offline_account"))

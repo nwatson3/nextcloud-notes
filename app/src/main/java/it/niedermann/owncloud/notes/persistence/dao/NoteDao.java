@@ -161,6 +161,9 @@ public interface NoteDao {
     @Query("UPDATE NOTE SET status = 'LOCAL_EDITED', favorite = ((favorite | 1) - (favorite & 1)) WHERE id = :id")
     void toggleFavorite(long id);
 
+    @Query("UPDATE NOTE SET favorite = ((favorite | 1) - (favorite & 1)) WHERE id = :id")
+    void toggleFavoriteOffline(long id);
+
     @Query("UPDATE NOTE SET remoteId = :remoteId WHERE id = :id")
     void updateRemoteId(long id, Long remoteId);
 

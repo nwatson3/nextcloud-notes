@@ -54,8 +54,9 @@ public abstract class NoteViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener((view) -> noteClickListener.onNoteClick(getLayoutPosition(), view));
     }
 
-    protected void bindStatus(AppCompatImageView noteStatus, DBStatus status, int mainColor) {
-        noteStatus.setVisibility(DBStatus.VOID.equals(status) ? INVISIBLE : VISIBLE);
+    protected void bindStatus(AppCompatImageView noteStatus, AppCompatImageView noteOfflineStatus, DBStatus status, int mainColor) {
+        noteStatus.setVisibility((DBStatus.VOID.equals(status) || DBStatus.LOCAL_ONLY.equals(status)) ? INVISIBLE : VISIBLE);
+        noteOfflineStatus.setVisibility(DBStatus.LOCAL_ONLY.equals(status) ? VISIBLE : INVISIBLE);
         DrawableCompat.setTint(noteStatus.getDrawable(), BrandingUtil.getSecondaryForegroundColorDependingOnTheme(noteStatus.getContext(), mainColor));
     }
 

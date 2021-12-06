@@ -56,6 +56,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/noteOfflineStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="4dp"
+                    android:baseline="14dp"
+                    app:srcCompat="@drawable/ic_baseline_warning_24" />
+
                 <ImageView
                     android:id="@+id/noteFavorite"
                     android:layout_width="wrap_content"

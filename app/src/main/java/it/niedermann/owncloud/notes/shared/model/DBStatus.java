@@ -24,7 +24,13 @@ public enum DBStatus {
      * Therefore, the Note have to be kept locally until the synchronization has succeeded.
      * However, Notes with this status should not be displayed in the UI.
      */
-    LOCAL_DELETED("LOCAL_DELETED");
+    LOCAL_DELETED("LOCAL_DELETED"),
+
+    /**
+     * LOCAL_ONLY means that the Note is on a local account only and thus does not sync to a nextcloud
+     * server. It should be displayed with a special status icon to warn the user of this fact.
+     */
+    LOCAL_ONLY("LOCAL_ONLY");
 
     @NonNull
     private final String title;
