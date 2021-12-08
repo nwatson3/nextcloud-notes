@@ -68,12 +68,23 @@ public class AccountSwitcherDialog extends BrandedDialogFragment {
             account$.removeObservers(requireActivity());
 
             binding.accountName.setText(currentLocalAccount.getDisplayName());
-            binding.accountHost.setText(Uri.parse(currentLocalAccount.getUrl()).getHost());
-            Glide.with(requireContext())
-                    .load(currentLocalAccount.getUrl() + "/index.php/avatar/" + Uri.encode(currentLocalAccount.getUserName()) + "/64")
-                    .error(R.drawable.ic_account_circle_grey_24dp)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(binding.currentAccountItemAvatar);
+            if(currentLocalAccount.getAccountName().equals("offline_account"))
+            {
+                binding.accountHost.setText(currentLocalAccount.getUrl());
+                Glide.with(requireContext())
+                        .load(R.drawable.ic_baseline_warning_24)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(binding.currentAccountItemAvatar);
+            }
+            else
+            {
+                binding.accountHost.setText(Uri.parse(currentLocalAccount.getUrl()).getHost());
+                Glide.with(requireContext())
+                        .load(currentLocalAccount.getUrl() + "/index.php/avatar/" + Uri.encode(currentLocalAccount.getUserName()) + "/64")
+                        .error(R.drawable.ic_account_circle_grey_24dp)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(binding.currentAccountItemAvatar);
+            }
             binding.accountLayout.setOnClickListener((v) -> dismiss());
 
             final var adapter = new AccountSwitcherAdapter((localAccount -> {

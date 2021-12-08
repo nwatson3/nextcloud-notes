@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.NotesRepository;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.shared.model.IResponseCallback;
@@ -35,11 +36,15 @@ public class ManageAccountsViewModel extends AndroidViewModel {
     }
 
     public void getCurrentAccount(@NonNull Context context, @NonNull IResponseCallback<Account> callback) {
+        callback.onSuccess(AccountHelper.getCurrentAccount());
+        /*
         try {
             callback.onSuccess(repo.getAccountByName((SingleAccountHelper.getCurrentSingleSignOnAccount(context).name)));
         } catch (NextcloudFilesAppAccountNotFoundException | NoCurrentAccountSelectedException e) {
             callback.onError(e);
         }
+
+         */
     }
 
     public LiveData<List<Account>> getAccounts$() {

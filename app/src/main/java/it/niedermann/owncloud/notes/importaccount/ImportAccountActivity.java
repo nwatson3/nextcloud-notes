@@ -83,7 +83,7 @@ public class ImportAccountActivity extends AppCompatActivity {
             binding.status.setVisibility(View.GONE);
 
             AccountHelper.setCurrentAccount("offline_account");
-            final var status$ = importAccountViewModel.addAccount("", "", "offline_account", new Capabilities(), "Offline Account", new IResponseCallback<Account>() {
+            final var status$ = importAccountViewModel.addAccount("Local device only", "Offline Account", "offline_account", new Capabilities(), "Offline Account", new IResponseCallback<Account>() {
                 @Override
                 public void onSuccess(Account result) {
                     Log.i("nwatson3", "success");
