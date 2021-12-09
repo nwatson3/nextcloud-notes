@@ -1,8 +1,6 @@
 package it.niedermann.owncloud.notes.manageaccounts;
 
 import android.graphics.drawable.LayerDrawable;
-import android.net.Uri;
-import android.view.Menu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -10,17 +8,12 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-
 import java.util.stream.Stream;
 
-import it.niedermann.nextcloud.sso.glide.SingleSignOnUrl;
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.databinding.ItemAccountChooseBinding;
 import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
-import it.niedermann.owncloud.notes.shared.model.ApiVersion;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;

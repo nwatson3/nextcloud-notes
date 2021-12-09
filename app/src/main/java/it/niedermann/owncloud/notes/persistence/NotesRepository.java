@@ -181,7 +181,6 @@ public class NotesRepository {
                     try {
                         Log.d(TAG, "… starting now");
                         final NotesImportTask importTask = new NotesImportTask(context, this, account, importExecutor, apiProvider);
-                        Log.d(TAG, "test abc");
                         return importTask.importNotes(new IResponseCallback<>() {
                             @Override
                             public void onSuccess(Void result) {
@@ -441,17 +440,8 @@ public class NotesRepository {
     @MainThread
     public LiveData<Note> moveNoteToAnotherAccount(Account account, @NonNull Note note) {
         final var fullNote = new Note(null, note.getModified(), note.getTitle(), note.getContent(), note.getCategory(), note.getFavorite(), null);
-//        if(account.getAccountName().equals("local_account"))
-//        {
-//            fullNote.setStatus(DBStatus.LOCAL_ONLY);
-//        }
-//        else
-//        {
-//            fullNote.setStatus(DBStatus.LOCAL_EDITED);
-//        }
         fullNote.setStatus(DBStatus.LOCAL_EDITED);
         deleteNoteAndSync(account, note.getId());
-        Log.i("nwatson3", account.getAccountName());
         return addNoteAndSync(account, fullNote);
     }
 
@@ -471,12 +461,9 @@ public class NotesRepository {
     @AnyThread
     public void toggleFavoriteAndSync(Account account, long noteId) {
         executor.submit(() -> {
-            if(account.getAccountName().equals("offline_account"))
-            {
+            if(account.getAccountName().equals("offline_account")) {
                 db.getNoteDao().toggleFavoriteOffline(noteId);
-            }
-            else
-            {
+            } else {
                 db.getNoteDao().toggleFavorite(noteId);
             }
             scheduleSync(account, true);
@@ -564,12 +551,9 @@ public class NotesRepository {
         executor.submit(() -> {
             db.getNoteDao().updateStatus(id, DBStatus.LOCAL_DELETED);
             notifyWidgets();
-            if(!account.getAccountName().equals("offline_account"))
-            {
+            if(!account.getAccountName().equals("offline_account")) {
                 db.getNoteDao().deleteByNoteId(id, DBStatus.LOCAL_DELETED);
-            }
-            else
-            {
+            } else {
                 scheduleSync(account, true);
             }
 
@@ -839,7 +823,6 @@ public class NotesRepository {
                 syncActive.put(account.getId(), false);
             }
             Log.d(TAG, "Sync requested (" + (onlyLocalChanges ? "onlyLocalChanges" : "full") + "; " + (Boolean.TRUE.equals(syncActive.get(account.getId())) ? "sync active" : "sync NOT active") + ") ...");
-            //TODO
             if(account.getAccountName().equals("offline_account"))
             {
                 Log.d(TAG, "... do nothing");
@@ -853,8 +836,6 @@ public class NotesRepository {
                         Log.w(TAG, "List of push-callbacks was set for account \"" + account.getAccountName() + "\" but it was null");
                     }
                 }
-                //syncStatus.postValue(true);
-                //syncStatus.postValue(false);
             }
             else if (isSyncPossible() && (!Boolean.TRUE.equals(syncActive.get(account.getId())) || onlyLocalChanges)) {
                 syncActive.put(account.getId(), true);

@@ -19,19 +19,17 @@ import android.animation.AnimatorInflater;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -47,24 +45,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.nextcloud.android.sso.AccountImporter;
 import com.nextcloud.android.sso.exceptions.AccountImportCancelledException;
-import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException;
 import com.nextcloud.android.sso.exceptions.NextcloudHttpRequestFailedException;
-import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException;
 import com.nextcloud.android.sso.exceptions.TokenMismatchException;
 import com.nextcloud.android.sso.exceptions.UnknownErrorException;
-import com.nextcloud.android.sso.helper.SingleAccountHelper;
 
 import java.net.HttpURLConnection;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 import it.niedermann.owncloud.notes.LockedActivity;
 import it.niedermann.owncloud.notes.R;
@@ -100,7 +92,6 @@ import it.niedermann.owncloud.notes.shared.model.NavigationCategory;
 import it.niedermann.owncloud.notes.shared.model.NoteClickListener;
 import it.niedermann.owncloud.notes.shared.util.CustomAppGlideModule;
 import it.niedermann.owncloud.notes.shared.util.NoteUtil;
-import it.niedermann.owncloud.notes.shared.util.ShareUtil;
 
 public class MainActivity extends LockedActivity implements NoteClickListener, AccountPickerListener, AccountSwitcherListener, CategoryDialogFragment.CategoryDialogListener {
 
@@ -166,62 +157,19 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
         setupNotesList();
 
         AccountHelper.init(this.getApplication());
-
         mainViewModel.getAccountsCount().observe(this, (count) -> {
             if (count == 0) {
                 startActivityForResult(new Intent(this, ImportAccountActivity.class), ImportAccountActivity.REQUEST_CODE_IMPORT_ACCOUNT);
             } else {
                 executor.submit(() -> {
-                    //try {
-                        //final var account = mainViewModel.getLocalAccountByAccountName(SingleAccountHelper.getCurrentSingleSignOnAccount(getApplicationContext()).name);
                         final var account = mainViewModel.getLocalAccountByAccountName(AccountHelper.getCurrentAccount().getAccountName());
                         runOnUiThread(() -> mainViewModel.postCurrentAccount(account));
-                    /*} catch (NextcloudFilesAppAccountNotFoundException e) {
-                        // Verbose log output for https://github.com/stefan-niedermann/nextcloud-notes/issues/1256
-                        runOnUiThread(() -> new AlertDialog.Builder(this)
-                                .setTitle(NextcloudFilesAppAccountNotFoundException.class.getSimpleName())
-                                .setMessage(R.string.backup)
-                                .setPositiveButton(R.string.simple_backup, (a, b) -> executor.submit(() -> {
-                                    final var modifiedNotes = new LinkedList<Note>();
-                                    for (final var account : mainViewModel.getAccounts()) {
-                                        modifiedNotes.addAll(mainViewModel.getLocalModifiedNotes(account.getId()));
-                                    }
-                                    if (modifiedNotes.size() == 1) {
-                                        final var note = modifiedNotes.get(0);
-                                        ShareUtil.openShareDialog(this, note.getTitle(), note.getContent());
-                                    } else {
-                                        ShareUtil.openShareDialog(this,
-                                                getResources().getQuantityString(R.plurals.share_multiple, modifiedNotes.size(), modifiedNotes.size()),
-                                                mainViewModel.collectNoteContents(modifiedNotes.stream().map(Note::getId).collect(Collectors.toList())));
-                                    }
-                                }))
-                                .setNegativeButton(R.string.simple_error, (a, b) -> {
-                                    final var ssoPreferences = AccountImporter.getSharedPreferences(getApplicationContext());
-                                    final var ssoPreferencesString = new StringBuilder()
-                                            .append("Current SSO account: ").append(ssoPreferences.getString("PREF_CURRENT_ACCOUNT_STRING", null)).append("\n")
-                                            .append("\n")
-                                            .append("SSO SharedPreferences: ").append("\n");
-                                    for (final var entry : ssoPreferences.getAll().entrySet()) {
-                                        ssoPreferencesString.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-                                    }
-                                    ssoPreferencesString.append("\n")
-                                            .append("Available accounts in DB: ").append(TextUtils.join(", ", mainViewModel.getAccounts().stream().map(Account::getAccountName).collect(Collectors.toList())));
-                                    runOnUiThread(() -> ExceptionDialogFragment.newInstance(new RuntimeException(e.getMessage(), new RuntimeException(ssoPreferencesString.toString(), e))).show(getSupportFragmentManager(), ExceptionDialogFragment.class.getSimpleName()));
-                                })
-                                .show());
-                    } catch (NoCurrentAccountSelectedException e) {
-                        runOnUiThread(() -> ExceptionDialogFragment.newInstance(e).show(getSupportFragmentManager(), ExceptionDialogFragment.class.getSimpleName()));
-                    }
-                    */
                 });
             }
         });
 
         mainViewModel.hasMultipleAccountsConfigured().observe(this, hasMultipleAccountsConfigured -> canMoveNoteToAnotherAccounts = hasMultipleAccountsConfigured);
-        mainViewModel.getSyncStatus().observe(this, syncStatus -> {
-            swipeRefreshLayout.setRefreshing(syncStatus);
-            Log.i("nwatson3", "observed " + syncStatus);
-        });
+        mainViewModel.getSyncStatus().observe(this, syncStatus -> swipeRefreshLayout.setRefreshing(syncStatus));
         mainViewModel.getSyncErrors().observe(this, exceptions -> {
             if (mainViewModel.containsNonInfrastructureRelatedItems(exceptions)) {
                 BrandedSnackbar.make(coordinatorLayout, R.string.error_synchronization, Snackbar.LENGTH_LONG)
@@ -366,26 +314,17 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
         final var accountLiveData = mainViewModel.getCurrentAccount();
         accountLiveData.observe(this, (currentAccount) -> {
             accountLiveData.removeObservers(this);
-            //try {
-                // It is possible that after the deletion of the last account, this onResponse gets called before the ImportAccountActivity gets started.
-                //if (SingleAccountHelper.getCurrentSingleSignOnAccount(this) != null) {
-                    mainViewModel.synchronizeNotes(currentAccount, new IResponseCallback<Void>() {
-                        @Override
-                        public void onSuccess(Void v) {
-                            Log.d(TAG, "Successfully synchronized notes for " + currentAccount.getAccountName());
-                        }
+            mainViewModel.synchronizeNotes(currentAccount, new IResponseCallback<Void>() {
+                @Override
+                public void onSuccess(Void v) {
+                    Log.d(TAG, "Successfully synchronized notes for " + currentAccount.getAccountName());
+                }
 
-                        @Override
-                        public void onError(@NonNull Throwable t) {
-                            t.printStackTrace();
-                        }
-                    });
-                //}
-            //} catch (NextcloudFilesAppAccountNotFoundException e) {
-            //    ExceptionDialogFragment.newInstance(e).show(getSupportFragmentManager(), ExceptionDialogFragment.class.getSimpleName());
-            //} catch (NoCurrentAccountSelectedException e) {
-            //    Log.i(TAG, "No current account is selected - maybe the last account has been deleted?");
-            //}
+                @Override
+                public void onError(@NonNull Throwable t) {
+                    t.printStackTrace();
+                }
+            });
         });
         super.onResume();
     }
@@ -663,9 +602,6 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.i("nwatson3", "MainActivity onActivityResult resultCode=" + resultCode);
-        Log.i("nwatson3", "MainActivity onActivityResult requestCode=" + requestCode);
-
         switch (requestCode) {
             case REQUEST_CODE_CREATE_NOTE: {
                 listView.scrollToPosition(0);
@@ -682,7 +618,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
             }
             case REQUEST_CODE_TRASHBIN: {
                 if (RESULT_CANCELED == resultCode) {
-                    BrandedSnackbar.make(binding.navigationMenu, "Not available in offline mode.", Snackbar.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Not available in offline mode.", Toast.LENGTH_SHORT);
                 }
             }
             default: {
@@ -691,7 +627,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
                         CapabilitiesWorker.update(this);
                         executor.submit(() -> {
                             final var importSnackbar = BrandedSnackbar.make(coordinatorLayout, R.string.progress_import_indeterminate, Snackbar.LENGTH_INDEFINITE);
-                            Log.i("nwatson3", "Added account: " + "name:" + ssoAccount.name + ", " + ssoAccount.url + ", userId" + ssoAccount.userId);
+                            Log.i(TAG, "Added account: " + "name:" + ssoAccount.name + ", " + ssoAccount.url + ", userId" + ssoAccount.userId);
                             try {
                                 Log.i(TAG, "Refreshing capabilities for " + ssoAccount.name);
                                 final var capabilities = CapabilitiesClient.getCapabilities(getApplicationContext(), ssoAccount, null, ApiProvider.getInstance());
@@ -748,7 +684,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
                         });
                     });
                 } catch (AccountImportCancelledException e) {
-                    Log.i("nwatson3", "AccountImport has been cancelled.");
+                    Log.i(TAG, "AccountImport has been cancelled.");
                 }
             }
         }
@@ -809,14 +745,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
     @Override
     public void onAccountPicked(@NonNull Account account) {
         for (final var noteId : tracker.getSelection()) {
-
             mainViewModel.moveNoteToAnotherAccount(account, noteId);
-
-            //final var moveLiveData = mainViewModel.moveNoteToAnotherAccount(account, noteId);
-            //moveLiveData.observe(this, (v) -> {
-            //    tracker.deselect(noteId);
-            //    moveLiveData.removeObservers(this);
-            //});
         }
     }
 

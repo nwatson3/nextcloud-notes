@@ -1,9 +1,7 @@
 package it.niedermann.owncloud.notes.importaccount;
 
 import android.accounts.NetworkErrorException;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,8 +47,6 @@ public class ImportAccountActivity extends AppCompatActivity {
     private ImportAccountViewModel importAccountViewModel;
     private ActivityImportAccountBinding binding;
 
-    public static final int CHOOSE_ACCOUNT_SSO = 4242;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,16 +82,8 @@ public class ImportAccountActivity extends AppCompatActivity {
             final var status$ = importAccountViewModel.addAccount("Local device only", "Offline Account", "offline_account", new Capabilities(), "Offline Account", new IResponseCallback<Account>() {
                 @Override
                 public void onSuccess(Account result) {
-                    Log.i("nwatson3", "success");
-                    //SyncWorker.update(ImportAccountActivity.this, PreferenceManager.getDefaultSharedPreferences(ImportAccountActivity.this)
-                    //.getBoolean(getString(R.string.pref_key_background_sync), true));
                     setResult(RESULT_OK);
                     finish();
-                }
-
-                @Override
-                public void onError(@NonNull Throwable t) {
-                    Log.i("nwatson3", "error");
                 }
             });
             runOnUiThread(() -> status$.observe(ImportAccountActivity.this, (status) -> {
@@ -121,17 +109,13 @@ public class ImportAccountActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("nwatson3", "ImportAccountActivity onActivityResult resultCode=" + resultCode);
         try {
-            Log.i("nwatson3", "test");
-
             AccountImporter.onActivityResult(requestCode, resultCode, data, ImportAccountActivity.this, ssoAccount -> {
                 runOnUiThread(() -> binding.progressCircular.setVisibility(View.VISIBLE));
 
                 AccountHelper.setCurrentAccount(ssoAccount.name);
-                //SingleAccountHelper.setCurrentAccount(getApplicationContext(), ssoAccount.name);
                 executor.submit(() -> {
-                    Log.i("nwatson3", "Added account1: " + "name:" + ssoAccount.name + ", " + ssoAccount.url + ", userId" + ssoAccount.userId);
+                    Log.i(TAG, "Added account: " + "name:" + ssoAccount.name + ", " + ssoAccount.url + ", userId" + ssoAccount.userId);
                     try {
                         Log.i(TAG, "Loading capabilities for " + ssoAccount.name);
                         final var capabilities = CapabilitiesClient.getCapabilities(getApplicationContext(), ssoAccount, null, ApiProvider.getInstance());

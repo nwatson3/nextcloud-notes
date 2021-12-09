@@ -5,13 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.nextcloud.android.sso.Constants;
-import com.nextcloud.android.sso.helper.SingleAccountHelper;
-
-import it.niedermann.owncloud.notes.R;
-import it.niedermann.owncloud.notes.branding.BrandedSnackbar;
-import it.niedermann.owncloud.notes.databinding.DrawerLayoutBinding;
 
 public class TrashbinActivityWrapper extends Activity {
     @Override

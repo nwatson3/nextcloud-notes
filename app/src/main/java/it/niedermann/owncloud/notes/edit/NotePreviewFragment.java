@@ -154,30 +154,22 @@ public class NotePreviewFragment extends SearchableBaseNoteFragment implements O
 
     @Override
     public void onRefresh() {
-        if(AccountHelper.getCurrentAccount().getAccountName().equals("offline_account"))
-        {
+        if(AccountHelper.getCurrentAccount().getAccountName().equals("offline_account")) {
             binding.swiperefreshlayout.setRefreshing(false);
         }
-        //else if (noteLoaded && repo.isSyncPossible() && SSOUtil.isConfigured(getContext())) {
         else if (noteLoaded && repo.isSyncPossible()) {
             binding.swiperefreshlayout.setRefreshing(true);
             executor.submit(() -> {
-                //try {
-                    //TODO
-                    //final var account = repo.getAccountByName(SingleAccountHelper.getCurrentSingleSignOnAccount(requireContext()).name);
-                    final var account = repo.getAccountByName(AccountHelper.getCurrentAccount().getAccountName());
-                        repo.addCallbackPull(account, () -> executor.submit(() -> {
-                            note = repo.getNoteById(note.getId());
-                            changedText = note.getContent();
-                            requireActivity().runOnUiThread(() -> {
-                                binding.singleNoteContent.setMarkdownString(note.getContent());
-                                binding.swiperefreshlayout.setRefreshing(false);
-                            });
-                        }));
-                        repo.scheduleSync(account, false);
-                //} catch (NextcloudFilesAppAccountNotFoundException | NoCurrentAccountSelectedException e) {
-                 //   e.printStackTrace();
-                //}
+                final var account = repo.getAccountByName(AccountHelper.getCurrentAccount().getAccountName());
+                    repo.addCallbackPull(account, () -> executor.submit(() -> {
+                        note = repo.getNoteById(note.getId());
+                        changedText = note.getContent();
+                        requireActivity().runOnUiThread(() -> {
+                            binding.singleNoteContent.setMarkdownString(note.getContent());
+                            binding.swiperefreshlayout.setRefreshing(false);
+                        });
+                    }));
+                    repo.scheduleSync(account, false);
             });
         } else {
             binding.swiperefreshlayout.setRefreshing(false);

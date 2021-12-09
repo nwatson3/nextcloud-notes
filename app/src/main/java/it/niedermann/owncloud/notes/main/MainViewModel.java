@@ -121,7 +121,6 @@ public class MainViewModel extends AndroidViewModel {
     public void postCurrentAccount(@NonNull Account account) {
         state.set(KEY_CURRENT_ACCOUNT, account);
         BrandingUtil.saveBrandColors(getApplication(), account.getColor(), account.getTextColor());
-        //SingleAccountHelper.setCurrentAccount(getApplication(), account.getAccountName());
         AccountHelper.setCurrentAccount(account.getAccountName());
 
         final var currentAccount = this.currentAccount.getValue();
@@ -393,7 +392,6 @@ public class MainViewModel extends AndroidViewModel {
             @Override
             public void onError(@NonNull Throwable t) {
                 callback.onError(t);
-                Log.i("nwatson3", "error");
             }
         });
     }
@@ -402,21 +400,15 @@ public class MainViewModel extends AndroidViewModel {
      * Updates the network status if necessary and pulls the latest {@link Capabilities} of the given {@param localAccount}
      */
     public void synchronizeCapabilities(@NonNull Account localAccount, @NonNull IResponseCallback<Void> callback) {
-        Log.i("nwatson3", "test1");
         executor.submit(() -> {
-            Log.i("nwatson3", "test2");
             if (!repo.isSyncPossible()) {
-                Log.i("nwatson3", "test3");
                 repo.updateNetworkStatus();
             }
             if (repo.isSyncPossible()) {
-                Log.i("nwatson3", "test4");
                 try {
-                    Log.i("nwatson3", "test5");
                     if(!localAccount.getAccountName().equals("offline_account"))
                     {
                         final var ssoAccount = AccountImporter.getSingleSignOnAccount(getApplication(), localAccount.getAccountName());
-                        Log.i("nwatson3", "test6");
                         try {
                             final var capabilities = CapabilitiesClient.getCapabilities(getApplication(), ssoAccount, localAccount.getCapabilitiesETag(), ApiProvider.getInstance());
                             repo.updateCapabilitiesETag(localAccount.getId(), capabilities.getETag());
@@ -520,11 +512,6 @@ public class MainViewModel extends AndroidViewModel {
          Note note = repo.getNoteById(noteId);
          Log.v(TAG, "[moveNoteToAnotherAccount] - note: " + (BuildConfig.DEBUG ? note : note.getTitle()));
          repo.moveNoteToAnotherAccount(account, note);
-
-       // return switchMap(repo.getNoteById$(noteId), (note) -> {
-       //     Log.v(TAG, "[moveNoteToAnotherAccount] - note: " + (BuildConfig.DEBUG ? note : note.getTitle()));
-       //     return repo.moveNoteToAnotherAccount(account, note);
-       // });
     }
 
     public LiveData<Void> toggleFavoriteAndSync(long noteId) {

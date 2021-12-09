@@ -37,14 +37,6 @@ public class ManageAccountsViewModel extends AndroidViewModel {
 
     public void getCurrentAccount(@NonNull Context context, @NonNull IResponseCallback<Account> callback) {
         callback.onSuccess(AccountHelper.getCurrentAccount());
-        /*
-        try {
-            callback.onSuccess(repo.getAccountByName((SingleAccountHelper.getCurrentSingleSignOnAccount(context).name)));
-        } catch (NextcloudFilesAppAccountNotFoundException | NoCurrentAccountSelectedException e) {
-            callback.onError(e);
-        }
-
-         */
     }
 
     public LiveData<List<Account>> getAccounts$() {
@@ -72,7 +64,6 @@ public class ManageAccountsViewModel extends AndroidViewModel {
 
     public void selectAccount(@Nullable Account account, @NonNull Context context) {
         AccountHelper.setCurrentAccount(account.getAccountName());
-        //SingleAccountHelper.setCurrentAccount(context, (account == null) ? null : account.getAccountName());
     }
 
     public void countUnsynchronizedNotes(long accountId, @NonNull IResponseCallback<Long> callback) {

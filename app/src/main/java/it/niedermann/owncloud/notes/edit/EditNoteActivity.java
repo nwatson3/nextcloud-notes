@@ -63,16 +63,6 @@ public class EditNoteActivity extends LockedActivity implements BaseNoteFragment
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*try {
-            if (SingleAccountHelper.getCurrentSingleSignOnAccount(this) == null) {
-                throw new NoCurrentAccountSelectedException();
-            }
-        } catch (NextcloudFilesAppAccountNotFoundException | NoCurrentAccountSelectedException e) {
-            Toast.makeText(this, R.string.no_account_configured_yet, Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }*/
-
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         binding = ActivityEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -206,8 +196,7 @@ public class EditNoteActivity extends LockedActivity implements BaseNoteFragment
             content = "";
         }
         final var newNote = new Note(null, Calendar.getInstance(), NoteUtil.generateNonEmptyNoteTitle(content, this), content, categoryTitle, favorite, null);
-        if(AccountHelper.getCurrentAccount().getAccountName().equals("offline_account"))
-        {
+        if(AccountHelper.getCurrentAccount().getAccountName().equals("offline_account")) {
             newNote.setStatus(DBStatus.LOCAL_ONLY);
         }
         fragment = NoteEditFragment.newInstanceWithNewNote(newNote);

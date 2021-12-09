@@ -98,60 +98,51 @@ public abstract class BaseNoteFragment extends BrandedFragment implements Catego
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         executor.submit(() -> {
-            //try {
-                //final var ssoAccount = SingleAccountHelper.getCurrentSingleSignOnAccount(requireContext().getApplicationContext());
-                final var ssoAccount = AccountHelper.getCurrentAccount();
-                this.localAccount = repo.getAccountByName(ssoAccount.getAccountName());
+            final var ssoAccount = AccountHelper.getCurrentAccount();
+            this.localAccount = repo.getAccountByName(ssoAccount.getAccountName());
 
-                if (savedInstanceState == null) {
-                    final long id = requireArguments().getLong(PARAM_NOTE_ID);
-                    if (id > 0) {
-                        final long accountId = requireArguments().getLong(PARAM_ACCOUNT_ID);
-                        if (accountId > 0) {
-                            /* Switch account if account id has been provided */
-                            this.localAccount = repo.getAccountById(accountId);
-                            //SingleAccountHelper.setCurrentAccount(requireContext().getApplicationContext(), localAccount.getAccountName());
-                            AccountHelper.setCurrentAccount(localAccount.getAccountName());
-                        }
-                        isNew = false;
-                        note = originalNote = repo.getNoteById(id);
-                        requireActivity().runOnUiThread(() -> onNoteLoaded(note));
-                        requireActivity().invalidateOptionsMenu();
-                    } else {
-                        final var paramNote = (Note) requireArguments().getSerializable(PARAM_NEWNOTE);
-                        final var content = requireArguments().getString(PARAM_CONTENT);
-                        if (paramNote == null) {
-                            if (content == null) {
-                                throw new IllegalArgumentException(PARAM_NOTE_ID + " is not given, argument " + PARAM_NEWNOTE + " is missing and " + PARAM_CONTENT + " is missing.");
-                            } else {
-                                note = new Note(-1, null, Calendar.getInstance(), NoteUtil.generateNoteTitle(content), content, getString(R.string.category_readonly), false, null, DBStatus.VOID, -1, "", 0);
-                                requireActivity().runOnUiThread(() -> onNoteLoaded(note));
-                                requireActivity().invalidateOptionsMenu();
-                            }
+            if (savedInstanceState == null) {
+                final long id = requireArguments().getLong(PARAM_NOTE_ID);
+                if (id > 0) {
+                    final long accountId = requireArguments().getLong(PARAM_ACCOUNT_ID);
+                    if (accountId > 0) {
+                        /* Switch account if account id has been provided */
+                        this.localAccount = repo.getAccountById(accountId);
+                        AccountHelper.setCurrentAccount(localAccount.getAccountName());
+                    }
+                    isNew = false;
+                    note = originalNote = repo.getNoteById(id);
+                    requireActivity().runOnUiThread(() -> onNoteLoaded(note));
+                    requireActivity().invalidateOptionsMenu();
+                } else {
+                    final var paramNote = (Note) requireArguments().getSerializable(PARAM_NEWNOTE);
+                    final var content = requireArguments().getString(PARAM_CONTENT);
+                    if (paramNote == null) {
+                        if (content == null) {
+                            throw new IllegalArgumentException(PARAM_NOTE_ID + " is not given, argument " + PARAM_NEWNOTE + " is missing and " + PARAM_CONTENT + " is missing.");
                         } else {
-                            if(localAccount.getAccountName().equals("offline_account"))
-                            {
-                                paramNote.setStatus(DBStatus.LOCAL_ONLY);
-                            }
-                            else
-                            {
-                                paramNote.setStatus(DBStatus.LOCAL_EDITED);
-                            }
-                            note = repo.addNote(localAccount.getId(), paramNote);
-                            originalNote = null;
+                            note = new Note(-1, null, Calendar.getInstance(), NoteUtil.generateNoteTitle(content), content, getString(R.string.category_readonly), false, null, DBStatus.VOID, -1, "", 0);
                             requireActivity().runOnUiThread(() -> onNoteLoaded(note));
                             requireActivity().invalidateOptionsMenu();
                         }
+                    } else {
+                        if(localAccount.getAccountName().equals("offline_account")) {
+                            paramNote.setStatus(DBStatus.LOCAL_ONLY);
+                        } else {
+                            paramNote.setStatus(DBStatus.LOCAL_EDITED);
+                        }
+                        note = repo.addNote(localAccount.getId(), paramNote);
+                        originalNote = null;
+                        requireActivity().runOnUiThread(() -> onNoteLoaded(note));
+                        requireActivity().invalidateOptionsMenu();
                     }
-                } else {
-                    note = (Note) savedInstanceState.getSerializable(SAVEDKEY_NOTE);
-                    originalNote = (Note) savedInstanceState.getSerializable(SAVEDKEY_ORIGINAL_NOTE);
-                    requireActivity().runOnUiThread(() -> onNoteLoaded(note));
-                    requireActivity().invalidateOptionsMenu();
                 }
-            //} catch (NextcloudFilesAppAccountNotFoundException | NoCurrentAccountSelectedException e) {
-            //    e.printStackTrace();
-            //}
+            } else {
+                note = (Note) savedInstanceState.getSerializable(SAVEDKEY_NOTE);
+                originalNote = (Note) savedInstanceState.getSerializable(SAVEDKEY_ORIGINAL_NOTE);
+                requireActivity().runOnUiThread(() -> onNoteLoaded(note));
+                requireActivity().invalidateOptionsMenu();
+            }
         });
         setHasOptionsMenu(true);
     }

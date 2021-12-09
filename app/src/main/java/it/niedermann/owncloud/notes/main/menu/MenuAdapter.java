@@ -86,23 +86,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
     private static Intent generateTrashbinAppIntent(@NonNull Context context, @NonNull Account account, boolean prod) throws PackageManager.NameNotFoundException {
         final var packageManager = context.getPackageManager();
         final String packageName = prod ? Constants.PACKAGE_NAME_PROD : Constants.PACKAGE_NAME_DEV;
-
         Intent intent = new Intent(context, TrashbinActivityWrapper.class);
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(Intent.EXTRA_USER, account.getAccountName())
                 .putExtra("PROD", prod);
-
-        /*
-        final var intent = new Intent();
-
-        intent.setClassName(packageName, "com.owncloud.android.ui.trashbin.TrashbinActivity");
-        if (packageManager.resolveActivity(intent, 0) != null) {
-            return intent
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .putExtra(Intent.EXTRA_USER, account.getAccountName());
-        }
-
-        throw new PackageManager.NameNotFoundException("Could not resolve target activity.");*/
     }
 
     private static Intent generateTrashbinWebIntent(@NonNull Account account) {

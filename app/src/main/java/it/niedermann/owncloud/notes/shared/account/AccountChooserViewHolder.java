@@ -1,15 +1,8 @@
 package it.niedermann.owncloud.notes.shared.account;
 
-import android.net.Uri;
-
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-
-import it.niedermann.nextcloud.sso.glide.SingleSignOnUrl;
-import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.databinding.ItemAccountChooseBinding;
 import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
