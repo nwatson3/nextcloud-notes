@@ -13,14 +13,10 @@ public class TrashbinActivityWrapper extends Activity {
         super.onStart();
         String accountName = getIntent().getStringExtra(Intent.EXTRA_USER);
         setResult(RESULT_OK);
-        if(accountName.equals("offline_account"))
-        {
-            Log.i("nwatson3", "Unavailable for offline accounts");
+        if(accountName.equals("offline_account")) {
             setResult(RESULT_CANCELED);
             finish();
-        }
-        else
-        {
+        } else {
             Context context = getBaseContext();
             final var packageManager = context.getPackageManager();
             final boolean prod = getIntent().getBooleanExtra("PROD", true);
@@ -30,12 +26,10 @@ public class TrashbinActivityWrapper extends Activity {
 
             intent.setClassName(packageName, "com.owncloud.android.ui.trashbin.TrashbinActivity");
             if (packageManager.resolveActivity(intent, 0) != null) {
-                Log.i("nwatson3", "TEST1");
                 intent.setFlags(0);
                 startActivity(intent);
             }
         }
-        Log.i("nwatson3", "abcdef");
     }
 
     @Override

@@ -618,7 +618,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
             }
             case REQUEST_CODE_TRASHBIN: {
                 if (RESULT_CANCELED == resultCode) {
-                    Toast.makeText(getApplicationContext(), "Not available in offline mode.", Toast.LENGTH_SHORT);
+                    BrandedSnackbar.make(binding.navigationMenu, "Not available in offline mode.", Snackbar.LENGTH_LONG).show();
                 }
             }
             default: {

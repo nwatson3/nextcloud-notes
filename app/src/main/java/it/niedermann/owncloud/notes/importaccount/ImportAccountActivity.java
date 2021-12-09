@@ -85,6 +85,11 @@ public class ImportAccountActivity extends AppCompatActivity {
                     setResult(RESULT_OK);
                     finish();
                 }
+
+                @Override
+                public void onError(@NonNull Throwable t) {
+
+                }
             });
             runOnUiThread(() -> status$.observe(ImportAccountActivity.this, (status) -> {
                 binding.progressText.setVisibility(View.VISIBLE);
