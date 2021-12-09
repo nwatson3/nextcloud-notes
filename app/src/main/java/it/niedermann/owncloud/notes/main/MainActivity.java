@@ -119,6 +119,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
 
     private static final int REQUEST_CODE_CREATE_NOTE = 0;
     private static final int REQUEST_CODE_SERVER_SETTINGS = 1;
+    private static final int REQUEST_CODE_TRASHBIN = 2;
 
     protected ItemAdapter adapter;
     private NavigationAdapter adapterCategories;
@@ -356,11 +357,12 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
             activityBinding.launchAccountSwitcher.setOnClickListener((v) -> AccountSwitcherDialog.newInstance(nextAccount.getId()).show(getSupportFragmentManager(), AccountSwitcherDialog.class.getSimpleName()));
 
             if (menuAdapter == null) {
-                menuAdapter = new MenuAdapter(getApplicationContext(), nextAccount, REQUEST_CODE_SERVER_SETTINGS, (menuItem) -> {
+                menuAdapter = new MenuAdapter(getApplicationContext(), nextAccount, REQUEST_CODE_TRASHBIN, REQUEST_CODE_SERVER_SETTINGS, (menuItem) -> {
                     @Nullable Integer resultCode = menuItem.getResultCode();
                     if (resultCode == null) {
                         startActivity(menuItem.getIntent());
                     } else {
+                        menuItem.getIntent().setFlags(0);
                         startActivityForResult(menuItem.getIntent(), resultCode);
                     }
                 });
@@ -690,6 +692,11 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
                     return;
                 }
                 break;
+            }
+            case REQUEST_CODE_TRASHBIN: {
+                if (RESULT_CANCELED == resultCode) {
+                    BrandedSnackbar.make(binding.navigationMenu, "Not available in offline mode.", Snackbar.LENGTH_LONG).show();
+                }
             }
             default: {
                 try {

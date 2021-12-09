@@ -28,10 +28,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
     @NonNull
     private final Consumer<MenuItem> onClick;
 
-    public MenuAdapter(@NonNull Context context, @NonNull Account account, int settingsRequestCode, @NonNull Consumer<MenuItem> onClick) {
+    public MenuAdapter(@NonNull Context context, @NonNull Account account, int trashBinRequestCode, int settingsRequestCode, @NonNull Consumer<MenuItem> onClick) {
         this.menuItems = new MenuItem[]{
                 new MenuItem(new Intent(context, FormattingHelpActivity.class), R.string.action_formatting_help, R.drawable.ic_baseline_help_outline_24),
-                new MenuItem(generateTrashbinIntent(context, account), R.string.action_trashbin, R.drawable.ic_delete_grey600_24dp),
+                new MenuItem(generateTrashbinIntent(context, account), trashBinRequestCode, R.string.action_trashbin, R.drawable.ic_delete_grey600_24dp),
                 new MenuItem(new Intent(context, PreferencesActivity.class), settingsRequestCode, R.string.action_settings, R.drawable.ic_settings_grey600_24dp),
                 new MenuItem(new Intent(context, AboutActivity.class), R.string.simple_about, R.drawable.ic_info_outline_grey600_24dp)
         };
@@ -86,14 +86,23 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
     private static Intent generateTrashbinAppIntent(@NonNull Context context, @NonNull Account account, boolean prod) throws PackageManager.NameNotFoundException {
         final var packageManager = context.getPackageManager();
         final String packageName = prod ? Constants.PACKAGE_NAME_PROD : Constants.PACKAGE_NAME_DEV;
+
+        Intent intent = new Intent(context, TrashbinActivityWrapper.class);
+        return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra(Intent.EXTRA_USER, account.getAccountName())
+                .putExtra("PROD", prod);
+
+        /*
         final var intent = new Intent();
+
         intent.setClassName(packageName, "com.owncloud.android.ui.trashbin.TrashbinActivity");
         if (packageManager.resolveActivity(intent, 0) != null) {
             return intent
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     .putExtra(Intent.EXTRA_USER, account.getAccountName());
         }
-        throw new PackageManager.NameNotFoundException("Could not resolve target activity.");
+
+        throw new PackageManager.NameNotFoundException("Could not resolve target activity.");*/
     }
 
     private static Intent generateTrashbinWebIntent(@NonNull Account account) {

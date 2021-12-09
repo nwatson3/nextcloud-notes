@@ -138,6 +138,9 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+        <activity android:name=".main.menu.TrashbinActivityWrapper"
+                  android:launchMode="singleTop"
+                  android:parentActivityName=".main.MainActivity"/>
 
         <receiver
             android:name=".widget.singlenote.SingleNoteWidget"

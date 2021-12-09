@@ -1,1 +1,3 @@
-- add something to replace AccountImporter.getSingleSign
+Fix "deleted notes"
+
+Fix move notes between accounts
