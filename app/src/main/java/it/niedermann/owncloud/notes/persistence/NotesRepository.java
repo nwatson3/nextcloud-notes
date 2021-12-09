@@ -411,7 +411,7 @@ public class NotesRepository {
     @NonNull
     @MainThread
     public LiveData<Note> addNoteAndSync(Account account, Note note) {
-        DBStatus status = AccountHelper.getCurrentAccount().getAccountName().equals("offline_account") ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
+        DBStatus status = account.getAccountName().equals("offline_account") ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
         final var entity = new Note(0, null, note.getModified(), note.getTitle(), note.getContent(), note.getCategory(), note.getFavorite(), note.getETag(), status, account.getId(), generateNoteExcerpt(note.getContent(), note.getTitle()), 0);
         final var ret = new MutableLiveData<Note>();
         executor.submit(() -> ret.postValue(addNote(account.getId(), entity)));
@@ -441,8 +441,17 @@ public class NotesRepository {
     @MainThread
     public LiveData<Note> moveNoteToAnotherAccount(Account account, @NonNull Note note) {
         final var fullNote = new Note(null, note.getModified(), note.getTitle(), note.getContent(), note.getCategory(), note.getFavorite(), null);
+//        if(account.getAccountName().equals("local_account"))
+//        {
+//            fullNote.setStatus(DBStatus.LOCAL_ONLY);
+//        }
+//        else
+//        {
+//            fullNote.setStatus(DBStatus.LOCAL_EDITED);
+//        }
         fullNote.setStatus(DBStatus.LOCAL_EDITED);
         deleteNoteAndSync(account, note.getId());
+        Log.i("nwatson3", account.getAccountName());
         return addNoteAndSync(account, fullNote);
     }
 
@@ -555,7 +564,10 @@ public class NotesRepository {
         executor.submit(() -> {
             db.getNoteDao().updateStatus(id, DBStatus.LOCAL_DELETED);
             notifyWidgets();
-            scheduleSync(account, true);
+            if(!account.getAccountName().equals("offline_account"))
+            {
+                scheduleSync(account, true);
+            }
 
             if (SDK_INT >= O) {
                 final var shortcutManager = context.getSystemService(ShortcutManager.class);

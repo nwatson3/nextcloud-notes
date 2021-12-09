@@ -178,6 +178,9 @@ abstract class NotesServerSyncTask extends Thread {
                         // Please note, that db.deleteNote() realizes an optimistic conflict resolution, which is required for parallel changes of this Note from the UI.
                         repo.deleteByNoteId(note.getId(), LOCAL_DELETED);
                         break;
+                    case LOCAL_ONLY:
+                        repo.deleteByNoteId(note.getId(), LOCAL_DELETED);
+                        break;
                     default:
                         throw new IllegalStateException("Unknown State of Note " + note + ": " + note.getStatus());
                 }

@@ -822,11 +822,14 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
     @Override
     public void onAccountPicked(@NonNull Account account) {
         for (final var noteId : tracker.getSelection()) {
-            final var moveLiveData = mainViewModel.moveNoteToAnotherAccount(account, noteId);
-            moveLiveData.observe(this, (v) -> {
-                tracker.deselect(noteId);
-                moveLiveData.removeObservers(this);
-            });
+
+            mainViewModel.moveNoteToAnotherAccount(account, noteId);
+
+            //final var moveLiveData = mainViewModel.moveNoteToAnotherAccount(account, noteId);
+            //moveLiveData.observe(this, (v) -> {
+            //    tracker.deselect(noteId);
+            //    moveLiveData.removeObservers(this);
+            //});
         }
     }
 

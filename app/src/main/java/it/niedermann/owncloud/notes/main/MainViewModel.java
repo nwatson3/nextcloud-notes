@@ -516,11 +516,15 @@ public class MainViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<Note> moveNoteToAnotherAccount(Account account, long noteId) {
-        return switchMap(repo.getNoteById$(noteId), (note) -> {
-            Log.v(TAG, "[moveNoteToAnotherAccount] - note: " + (BuildConfig.DEBUG ? note : note.getTitle()));
-            return repo.moveNoteToAnotherAccount(account, note);
-        });
+    public void moveNoteToAnotherAccount(Account account, long noteId) {
+         Note note = repo.getNoteById(noteId);
+         Log.v(TAG, "[moveNoteToAnotherAccount] - note: " + (BuildConfig.DEBUG ? note : note.getTitle()));
+         repo.moveNoteToAnotherAccount(account, note);
+
+       // return switchMap(repo.getNoteById$(noteId), (note) -> {
+       //     Log.v(TAG, "[moveNoteToAnotherAccount] - note: " + (BuildConfig.DEBUG ? note : note.getTitle()));
+       //     return repo.moveNoteToAnotherAccount(account, note);
+       // });
     }
 
     public LiveData<Void> toggleFavoriteAndSync(long noteId) {
