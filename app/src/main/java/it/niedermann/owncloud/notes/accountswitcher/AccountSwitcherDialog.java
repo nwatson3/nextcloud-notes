@@ -20,6 +20,7 @@ import java.util.List;
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.branding.BrandedDialogFragment;
 import it.niedermann.owncloud.notes.databinding.DialogAccountSwitcherBinding;
+import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.manageaccounts.ManageAccountsActivity;
 import it.niedermann.owncloud.notes.persistence.NotesRepository;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
@@ -67,24 +68,13 @@ public class AccountSwitcherDialog extends BrandedDialogFragment {
         account$.observe(requireActivity(), (currentLocalAccount) -> {
             account$.removeObservers(requireActivity());
 
-            binding.accountName.setText(currentLocalAccount.getDisplayName());
-            if(currentLocalAccount.getAccountName().equals("offline_account"))
-            {
-                binding.accountHost.setText(currentLocalAccount.getUrl());
-                Glide.with(requireContext())
-                        .load(R.drawable.ic_baseline_warning_24)
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(binding.currentAccountItemAvatar);
-            }
-            else
-            {
-                binding.accountHost.setText(Uri.parse(currentLocalAccount.getUrl()).getHost());
-                Glide.with(requireContext())
-                        .load(currentLocalAccount.getUrl() + "/index.php/avatar/" + Uri.encode(currentLocalAccount.getUserName()) + "/64")
-                        .error(R.drawable.ic_account_circle_grey_24dp)
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(binding.currentAccountItemAvatar);
-            }
+            AccountHelper.loadAccountInfo(
+                    getContext(),
+                    currentLocalAccount,
+                    binding.currentAccountItemAvatar,
+                    binding.accountHost,
+                    binding.accountName);
+
             binding.accountLayout.setOnClickListener((v) -> dismiss());
 
             final var adapter = new AccountSwitcherAdapter((localAccount -> {

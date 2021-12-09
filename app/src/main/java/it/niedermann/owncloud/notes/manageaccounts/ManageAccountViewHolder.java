@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 import it.niedermann.nextcloud.sso.glide.SingleSignOnUrl;
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.databinding.ItemAccountChooseBinding;
+import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.shared.model.ApiVersion;
 
@@ -43,24 +44,12 @@ public class ManageAccountViewHolder extends RecyclerView.ViewHolder {
             @NonNull Consumer<Account> onChangeFileSuffix,
             boolean isCurrentAccount
     ) {
-        binding.accountName.setText(localAccount.getUserName());
-        if(localAccount.getAccountName().equals("offline_account"))
-        {
-            binding.accountHost.setText(localAccount.getUrl());
-            Glide.with(itemView.getContext())
-                    .load(R.drawable.ic_baseline_warning_24)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(binding.accountItemAvatar);
-        }
-        else
-        {
-            binding.accountHost.setText(Uri.parse(localAccount.getUrl()).getHost());
-            Glide.with(itemView.getContext())
-                    .load(new SingleSignOnUrl(localAccount.getAccountName(), localAccount.getUrl() + "/index.php/avatar/" + Uri.encode(localAccount.getUserName()) + "/64"))
-                    .error(R.drawable.ic_account_circle_grey_24dp)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(binding.accountItemAvatar);
-        }
+        AccountHelper.loadAccountInfo(
+                itemView.getContext(),
+                localAccount,
+                binding.accountItemAvatar,
+                binding.accountHost,
+                binding.accountName);
         itemView.setOnClickListener((v) -> onAccountClick.accept(localAccount));
         binding.accountContextMenu.setVisibility(VISIBLE);
         binding.accountContextMenu.setOnClickListener((v) -> {

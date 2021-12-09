@@ -312,24 +312,11 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
         mainViewModel.getNavigationCategories().observe(this, navigationItems -> this.adapterCategories.setItems(navigationItems));
         mainViewModel.getCurrentAccount().observe(this, (nextAccount) -> {
             fabCreate.hide();
-            if(nextAccount.getAccountName().equals("offline_account"))
-            {
-                Glide
-                        .with(this)
-                        .load(R.drawable.ic_baseline_warning_24)
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(activityBinding.launchAccountSwitcher);
-            }
-            else
-            {
-                Glide
-                        .with(this)
-                        .load(nextAccount.getUrl() + "/index.php/avatar/" + Uri.encode(nextAccount.getUserName()) + "/64")
-                        .placeholder(R.drawable.ic_account_circle_grey_24dp)
-                        .error(R.drawable.ic_account_circle_grey_24dp)
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(activityBinding.launchAccountSwitcher);
-            }
+            AccountHelper.loadAccountInfo(
+                    this,
+                    nextAccount,
+                    activityBinding.launchAccountSwitcher,
+                    null, null);
 
             mainViewModel.synchronizeNotes(nextAccount, new IResponseCallback<>() {
                 @Override

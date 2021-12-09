@@ -566,6 +566,10 @@ public class NotesRepository {
             notifyWidgets();
             if(!account.getAccountName().equals("offline_account"))
             {
+                db.getNoteDao().deleteByNoteId(id, DBStatus.LOCAL_DELETED);
+            }
+            else
+            {
                 scheduleSync(account, true);
             }
 

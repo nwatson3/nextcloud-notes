@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 import it.niedermann.nextcloud.sso.glide.SingleSignOnUrl;
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.databinding.ItemAccountChooseBinding;
+import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
 
 public class AccountSwitcherViewHolder extends RecyclerView.ViewHolder {
@@ -25,28 +26,13 @@ public class AccountSwitcherViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(@NonNull Account localAccount, @NonNull Consumer<Account> onAccountClick) {
-        binding.accountName.setText(localAccount.getDisplayName());
-
-        if(localAccount.getAccountName().equals("offline_account"))
-        {
-            binding.accountHost.setText(localAccount.getUrl());
-            Glide.with(itemView.getContext())
-                    .load(R.drawable.ic_baseline_warning_24)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(binding.accountItemAvatar);
-        }
-        else
-        {
-            binding.accountHost.setText(Uri.parse(localAccount.getUrl()).getHost());
-            Glide.with(itemView.getContext())
-                    .load(new SingleSignOnUrl(localAccount.getAccountName(), localAccount.getUrl() + "/index.php/avatar/" + Uri.encode(localAccount.getUserName()) + "/64"))
-                    .placeholder(R.drawable.ic_account_circle_grey_24dp)
-                    .error(R.drawable.ic_account_circle_grey_24dp)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(binding.accountItemAvatar);
-        }
+        AccountHelper.loadAccountInfo(
+                itemView.getContext(),
+                localAccount,
+                binding.accountItemAvatar,
+                binding.accountHost,
+                binding.accountName);
         itemView.setOnClickListener((v) -> onAccountClick.accept(localAccount));
-
         binding.accountContextMenu.setVisibility(View.GONE);
     }
 }
