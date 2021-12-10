@@ -2,6 +2,7 @@ package it.niedermann.owncloud.notes.main.items;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static android.view.View.GONE;
 import static it.niedermann.owncloud.notes.shared.util.NotesColorUtil.contrastRatioIsSufficient;
 
 import android.content.Context;
@@ -55,14 +56,14 @@ public abstract class NoteViewHolder extends RecyclerView.ViewHolder {
     }
 
     protected void bindStatus(AppCompatImageView noteStatus, AppCompatImageView noteOfflineStatus, DBStatus status, int mainColor) {
-        noteStatus.setVisibility((DBStatus.VOID.equals(status) || DBStatus.LOCAL_ONLY.equals(status)) ? INVISIBLE : VISIBLE);
+        noteStatus.setVisibility(DBStatus.VOID.equals(status) || DBStatus.LOCAL_ONLY.equals(status) ? INVISIBLE : VISIBLE);
         noteOfflineStatus.setVisibility(DBStatus.LOCAL_ONLY.equals(status) ? VISIBLE : INVISIBLE);
         DrawableCompat.setTint(noteStatus.getDrawable(), BrandingUtil.getSecondaryForegroundColorDependingOnTheme(noteStatus.getContext(), mainColor));
     }
 
     protected void bindCategory(@NonNull Context context, @NonNull TextView noteCategory, boolean showCategory, @NonNull String category, int mainColor) {
         final boolean isDarkThemeActive = NotesApplication.isDarkThemeActive(context);
-        noteCategory.setVisibility(showCategory && !category.isEmpty() ? View.VISIBLE : View.GONE);
+        noteCategory.setVisibility(showCategory && !category.isEmpty() ? VISIBLE : GONE);
         noteCategory.setText(category);
 
         @ColorInt final int categoryForeground;

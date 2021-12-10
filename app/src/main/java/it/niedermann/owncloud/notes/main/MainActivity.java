@@ -618,6 +618,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
                 if (RESULT_CANCELED == resultCode) {
                     BrandedSnackbar.make(binding.navigationMenu, "Not available in offline mode.", Snackbar.LENGTH_LONG).show();
                 }
+                break;
             }
             default: {
                 try {

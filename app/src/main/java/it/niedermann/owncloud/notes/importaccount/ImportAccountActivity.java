@@ -88,10 +88,10 @@ public class ImportAccountActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(@NonNull Throwable t) {
-
+                    // Do nothing
                 }
             });
-            runOnUiThread(() -> status$.observe(ImportAccountActivity.this, (status) -> {
+            runOnUiThread(() -> status$.observe(this, (status) -> {
                 binding.progressText.setVisibility(View.VISIBLE);
                 Log.v(TAG, "Status: " + status.count + " of " + status.total);
                 if(status.count > 0) {

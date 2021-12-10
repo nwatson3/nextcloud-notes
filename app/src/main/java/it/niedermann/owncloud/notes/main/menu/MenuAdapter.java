@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nextcloud.android.sso.Constants;
 import com.nextcloud.android.sso.helper.VersionCheckHelper;
 
 import it.niedermann.owncloud.notes.FormattingHelpActivity;
