@@ -23,7 +23,7 @@ import it.niedermann.owncloud.notes.shared.model.IResponseCallback;
 @RunWith(RobolectricTestRunner.class)
 public class AccountHelperTest extends TestCase {
 
-    private final String TEST_ACCOUNT_NAME = "testabc123";
+    private static final String TEST_ACCOUNT_NAME = "testabc123";
     private Context context = ApplicationProvider.getApplicationContext();
 
     @Test
@@ -42,7 +42,7 @@ public class AccountHelperTest extends TestCase {
         repo.addAccount("url", TEST_ACCOUNT_NAME, "offline_account", new Capabilities(), "display name", new IResponseCallback<Account>() {
             @Override
             public void onSuccess(Account result) {
-
+                assertNull(null);
             }
 
             @Override
