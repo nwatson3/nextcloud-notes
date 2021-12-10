@@ -36,7 +36,6 @@ import com.nextcloud.android.sso.AccountImporter;
 import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException;
 import com.nextcloud.android.sso.exceptions.NextcloudHttpRequestFailedException;
 import com.nextcloud.android.sso.exceptions.UnknownErrorException;
-import com.nextcloud.android.sso.helper.SingleAccountHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -406,7 +405,7 @@ public class MainViewModel extends AndroidViewModel {
             }
             if (repo.isSyncPossible()) {
                 try {
-                    if(!localAccount.getAccountName().equals("offline_account"))
+                    if(!"offline_account".equals(localAccount.getAccountName()))
                     {
                         final var ssoAccount = AccountImporter.getSingleSignOnAccount(getApplication(), localAccount.getAccountName());
                         try {
@@ -434,7 +433,7 @@ public class MainViewModel extends AndroidViewModel {
                         callback.onSuccess(null);
                     }
                 } catch (NextcloudFilesAppAccountNotFoundException e) {
-                    if(!localAccount.getAccountName().equals("offline_account"))
+                    if(!"offline_account".equals(localAccount.getAccountName()))
                     {
                         repo.deleteAccount(localAccount);
                         callback.onError(e);

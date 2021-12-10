@@ -3,7 +3,6 @@ package it.niedermann.owncloud.notes.about;
 import static it.niedermann.owncloud.notes.shared.util.SupportUtil.setTextWithURL;
 
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.fragment.app.Fragment;
 
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.databinding.FragmentAboutContributionTabBinding;
-import it.niedermann.owncloud.notes.shared.util.SupportUtil;
 
 public class AboutFragmentContributingTab extends Fragment {
 

@@ -1,7 +1,6 @@
 package it.niedermann.owncloud.notes.main.items.selection;
 
 import android.view.MotionEvent;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

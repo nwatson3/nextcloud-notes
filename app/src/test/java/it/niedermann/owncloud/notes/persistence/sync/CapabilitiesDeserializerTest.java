@@ -1,5 +1,8 @@
 package it.niedermann.owncloud.notes.persistence.sync;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import android.graphics.Color;
 
 import com.google.gson.JsonParser;
@@ -7,11 +10,6 @@ import com.google.gson.JsonParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-
-import it.niedermann.owncloud.notes.shared.model.Capabilities;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricTestRunner.class)
 public class CapabilitiesDeserializerTest {

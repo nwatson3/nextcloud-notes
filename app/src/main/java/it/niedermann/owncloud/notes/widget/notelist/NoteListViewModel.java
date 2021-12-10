@@ -1,5 +1,12 @@
 package it.niedermann.owncloud.notes.widget.notelist;
 
+import static androidx.lifecycle.Transformations.distinctUntilChanged;
+import static androidx.lifecycle.Transformations.map;
+import static androidx.lifecycle.Transformations.switchMap;
+import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.FAVORITES;
+import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.RECENT;
+import static it.niedermann.owncloud.notes.shared.util.DisplayUtils.convertToCategoryNavigationItem;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -15,13 +22,6 @@ import it.niedermann.owncloud.notes.main.MainActivity;
 import it.niedermann.owncloud.notes.main.navigation.NavigationAdapter;
 import it.niedermann.owncloud.notes.main.navigation.NavigationItem;
 import it.niedermann.owncloud.notes.persistence.NotesRepository;
-
-import static androidx.lifecycle.Transformations.distinctUntilChanged;
-import static androidx.lifecycle.Transformations.map;
-import static androidx.lifecycle.Transformations.switchMap;
-import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.FAVORITES;
-import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.RECENT;
-import static it.niedermann.owncloud.notes.shared.util.DisplayUtils.convertToCategoryNavigationItem;
 
 public class NoteListViewModel extends AndroidViewModel {
 

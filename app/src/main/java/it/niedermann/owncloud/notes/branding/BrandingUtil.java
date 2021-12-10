@@ -1,10 +1,10 @@
 package it.niedermann.owncloud.notes.branding;
 
+import static it.niedermann.owncloud.notes.shared.util.NotesColorUtil.contrastRatioIsSufficient;
+
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,8 +24,6 @@ import androidx.preference.PreferenceManager;
 import it.niedermann.android.sharedpreferences.SharedPreferenceIntLiveData;
 import it.niedermann.owncloud.notes.NotesApplication;
 import it.niedermann.owncloud.notes.R;
-
-import static it.niedermann.owncloud.notes.shared.util.NotesColorUtil.contrastRatioIsSufficient;
 
 public class BrandingUtil {
 

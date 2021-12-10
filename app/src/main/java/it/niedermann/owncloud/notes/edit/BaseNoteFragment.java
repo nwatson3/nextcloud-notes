@@ -28,10 +28,6 @@ import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
-import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException;
-import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException;
-import com.nextcloud.android.sso.helper.SingleAccountHelper;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
@@ -126,7 +122,7 @@ public abstract class BaseNoteFragment extends BrandedFragment implements Catego
                             requireActivity().invalidateOptionsMenu();
                         }
                     } else {
-                        if(localAccount.getAccountName().equals("offline_account")) {
+                        if("offline_account".equals(localAccount.getAccountName())) {
                             paramNote.setStatus(DBStatus.LOCAL_ONLY);
                         } else {
                             paramNote.setStatus(DBStatus.LOCAL_EDITED);

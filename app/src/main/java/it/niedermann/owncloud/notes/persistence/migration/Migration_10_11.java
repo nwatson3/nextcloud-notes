@@ -1,14 +1,11 @@
 package it.niedermann.owncloud.notes.persistence.migration;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-
-import java.util.Map;
 
 import it.niedermann.owncloud.notes.preferences.DarkModeSetting;
 

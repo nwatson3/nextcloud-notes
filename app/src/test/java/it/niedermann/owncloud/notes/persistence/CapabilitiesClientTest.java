@@ -1,5 +1,12 @@
 package it.niedermann.owncloud.notes.persistence;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import android.accounts.NetworkErrorException;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -24,13 +31,6 @@ import it.niedermann.owncloud.notes.shared.model.OcsResponse;
 import it.niedermann.owncloud.notes.shared.model.OcsUser;
 import retrofit2.Call;
 import retrofit2.Response;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class CapabilitiesClientTest {

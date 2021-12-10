@@ -18,7 +18,6 @@ import java.util.concurrent.Executors;
 
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.persistence.NotesRepository;
-import it.niedermann.owncloud.notes.persistence.entity.NotesListWidgetData;
 
 public class NoteListWidget extends AppWidgetProvider {
     private static final String TAG = NoteListWidget.class.getSimpleName();

@@ -1,5 +1,7 @@
 package it.niedermann.owncloud.notes.main.menu;
 
+import static android.view.View.GONE;
+
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -9,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.databinding.ItemNavigationBinding;
-
-import static android.view.View.GONE;
 
 public class MenuViewHolder extends RecyclerView.ViewHolder {
 

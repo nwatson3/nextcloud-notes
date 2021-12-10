@@ -1,8 +1,10 @@
 package it.niedermann.owncloud.notes.branding;
 
+import static it.niedermann.owncloud.notes.branding.BrandingUtil.readBrandColors;
+import static it.niedermann.owncloud.notes.branding.BrandingUtil.tintMenuIcon;
+
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.view.Menu;
 
@@ -16,9 +18,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import it.niedermann.owncloud.notes.R;
-
-import static it.niedermann.owncloud.notes.branding.BrandingUtil.readBrandColors;
-import static it.niedermann.owncloud.notes.branding.BrandingUtil.tintMenuIcon;
 
 public abstract class BrandedActivity extends AppCompatActivity implements Branded {
 

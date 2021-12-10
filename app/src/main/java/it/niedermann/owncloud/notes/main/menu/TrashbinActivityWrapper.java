@@ -3,17 +3,24 @@ package it.niedermann.owncloud.notes.main.menu;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.nextcloud.android.sso.Constants;
 
+/**
+ * Fails when the account is offline.
+ * Otherwise, runs the nextcloud trashbin activity with the associated account.
+ */
 public class TrashbinActivityWrapper extends Activity {
+
+    /**
+     * Called when this activity starts
+     */
     @Override
     protected void onStart() {
         super.onStart();
         String accountName = getIntent().getStringExtra(Intent.EXTRA_USER);
         setResult(RESULT_OK);
-        if(accountName.equals("offline_account")) {
+        if("offline_account".equals(accountName)) {
             setResult(RESULT_CANCELED);
             finish();
         } else {
@@ -32,6 +39,10 @@ public class TrashbinActivityWrapper extends Activity {
         }
     }
 
+    /**
+     * Called when this activity resumes. I.e., when the user presses the back button after
+     * restoring the deleted files they want.
+     */
     @Override
     protected void onResume() {
         super.onResume();

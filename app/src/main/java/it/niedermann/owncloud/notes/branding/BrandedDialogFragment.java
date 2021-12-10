@@ -1,7 +1,5 @@
 package it.niedermann.owncloud.notes.branding;
 
-import android.content.Context;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;

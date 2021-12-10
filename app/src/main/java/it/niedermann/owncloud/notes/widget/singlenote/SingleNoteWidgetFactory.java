@@ -15,7 +15,6 @@ import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.edit.EditNoteActivity;
 import it.niedermann.owncloud.notes.persistence.NotesRepository;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
-import it.niedermann.owncloud.notes.persistence.entity.SingleNoteWidgetData;
 
 public class SingleNoteWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 

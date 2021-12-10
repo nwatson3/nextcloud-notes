@@ -1,5 +1,15 @@
 package it.niedermann.owncloud.notes.persistence;
 
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.O;
+import static androidx.lifecycle.Transformations.distinctUntilChanged;
+import static androidx.lifecycle.Transformations.map;
+import static java.util.stream.Collectors.toMap;
+import static it.niedermann.owncloud.notes.edit.EditNoteActivity.ACTION_SHORTCUT;
+import static it.niedermann.owncloud.notes.shared.util.NoteUtil.generateNoteExcerpt;
+import static it.niedermann.owncloud.notes.widget.notelist.NoteListWidget.updateNoteListWidgets;
+import static it.niedermann.owncloud.notes.widget.singlenote.SingleNoteWidget.updateSingleNoteWidgets;
+
 import android.accounts.NetworkErrorException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,7 +41,6 @@ import com.nextcloud.android.sso.model.SingleSignOnAccount;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -66,16 +75,6 @@ import it.niedermann.owncloud.notes.shared.util.ApiVersionUtil;
 import it.niedermann.owncloud.notes.shared.util.NoteUtil;
 import it.niedermann.owncloud.notes.shared.util.SSOUtil;
 import retrofit2.Call;
-
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.O;
-import static androidx.lifecycle.Transformations.distinctUntilChanged;
-import static androidx.lifecycle.Transformations.map;
-import static it.niedermann.owncloud.notes.edit.EditNoteActivity.ACTION_SHORTCUT;
-import static it.niedermann.owncloud.notes.shared.util.NoteUtil.generateNoteExcerpt;
-import static it.niedermann.owncloud.notes.widget.notelist.NoteListWidget.updateNoteListWidgets;
-import static it.niedermann.owncloud.notes.widget.singlenote.SingleNoteWidget.updateSingleNoteWidgets;
-import static java.util.stream.Collectors.toMap;
 
 @SuppressWarnings("UnusedReturnValue")
 public class NotesRepository {
@@ -174,7 +173,7 @@ public class NotesRepository {
         if (account == null) {
             callback.onError(new Exception("Could not read created account."));
         } else {
-            if(!accountName.equals("offline_account"))
+            if(!"offline_account".equals(accountName))
             {
                 if (isSyncPossible()) {
                     syncActive.put(account.getId(), true);
@@ -410,7 +409,7 @@ public class NotesRepository {
     @NonNull
     @MainThread
     public LiveData<Note> addNoteAndSync(Account account, Note note) {
-        DBStatus status = account.getAccountName().equals("offline_account") ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
+        DBStatus status = "offline_account".equals(account.getAccountName()) ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
         final var entity = new Note(0, null, note.getModified(), note.getTitle(), note.getContent(), note.getCategory(), note.getFavorite(), note.getETag(), status, account.getId(), generateNoteExcerpt(note.getContent(), note.getTitle()), 0);
         final var ret = new MutableLiveData<Note>();
         executor.submit(() -> ret.postValue(addNote(account.getId(), entity)));
@@ -461,7 +460,7 @@ public class NotesRepository {
     @AnyThread
     public void toggleFavoriteAndSync(Account account, long noteId) {
         executor.submit(() -> {
-            if(account.getAccountName().equals("offline_account")) {
+            if("offline_account".equals(account.getAccountName())) {
                 db.getNoteDao().toggleFavoriteOffline(noteId);
             } else {
                 db.getNoteDao().toggleFavorite(noteId);
@@ -482,7 +481,7 @@ public class NotesRepository {
     @AnyThread
     public void setCategory(@NonNull Account account, long noteId, @NonNull String category) {
         executor.submit(() -> {
-            DBStatus status = account.getAccountName().equals("offline_account") ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
+            DBStatus status = "offline_account".equals(account.getAccountName()) ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
             db.getNoteDao().updateStatus(noteId, status);
             db.getNoteDao().updateCategory(noteId, category);
             scheduleSync(account, true);
@@ -520,7 +519,7 @@ public class NotesRepository {
                     title = oldNote.getTitle();
                 }
             }
-            DBStatus status = AccountHelper.getCurrentAccount().getAccountName().equals("offline_account") ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
+            DBStatus status = "offline_account".equals(AccountHelper.getCurrentAccount().getAccountName()) ? DBStatus.LOCAL_ONLY : DBStatus.LOCAL_EDITED;
             newNote = new Note(oldNote.getId(), remoteId, Calendar.getInstance(), title, newContent, oldNote.getCategory(), oldNote.getFavorite(), oldNote.getETag(), status, localAccount.getId(), generateNoteExcerpt(newContent, title), oldNote.getScrollY());
         }
         int rows = db.getNoteDao().updateNote(newNote);
@@ -551,7 +550,7 @@ public class NotesRepository {
         executor.submit(() -> {
             db.getNoteDao().updateStatus(id, DBStatus.LOCAL_DELETED);
             notifyWidgets();
-            if(!account.getAccountName().equals("offline_account")) {
+            if(!"offline_account".equals(account.getAccountName())) {
                 db.getNoteDao().deleteByNoteId(id, DBStatus.LOCAL_DELETED);
             } else {
                 scheduleSync(account, true);
@@ -823,7 +822,7 @@ public class NotesRepository {
                 syncActive.put(account.getId(), false);
             }
             Log.d(TAG, "Sync requested (" + (onlyLocalChanges ? "onlyLocalChanges" : "full") + "; " + (Boolean.TRUE.equals(syncActive.get(account.getId())) ? "sync active" : "sync NOT active") + ") ...");
-            if(account.getAccountName().equals("offline_account"))
+            if("offline_account".equals(account.getAccountName()))
             {
                 Log.d(TAG, "... do nothing");
                 if (callbacksPush.containsKey(account.getId()) && callbacksPush.get(account.getId()) != null) {

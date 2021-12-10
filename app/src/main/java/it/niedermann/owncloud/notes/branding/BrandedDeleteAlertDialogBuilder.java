@@ -2,7 +2,6 @@ package it.niedermann.owncloud.notes.branding;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.widget.Button;
 
 import androidx.annotation.CallSuper;
 

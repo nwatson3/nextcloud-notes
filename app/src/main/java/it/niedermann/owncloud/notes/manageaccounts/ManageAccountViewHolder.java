@@ -1,5 +1,10 @@
 package it.niedermann.owncloud.notes.manageaccounts;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static it.niedermann.owncloud.notes.branding.BrandingUtil.applyBrandToLayerDrawable;
+import static it.niedermann.owncloud.notes.shared.util.ApiVersionUtil.getPreferredApiVersion;
+
 import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 
@@ -14,11 +19,6 @@ import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.databinding.ItemAccountChooseBinding;
 import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static it.niedermann.owncloud.notes.branding.BrandingUtil.applyBrandToLayerDrawable;
-import static it.niedermann.owncloud.notes.shared.util.ApiVersionUtil.getPreferredApiVersion;
 
 public class ManageAccountViewHolder extends RecyclerView.ViewHolder {
 

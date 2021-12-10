@@ -1,5 +1,7 @@
 package it.niedermann.owncloud.notes.main.navigation;
 
+import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.UNCATEGORIZED;
+
 import android.text.TextUtils;
 
 import androidx.annotation.DrawableRes;
@@ -7,8 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType;
-
-import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.UNCATEGORIZED;
 
 public class NavigationItem {
     @NonNull

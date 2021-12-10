@@ -7,11 +7,8 @@ import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
@@ -21,7 +18,6 @@ import androidx.appcompat.widget.SearchView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import it.niedermann.owncloud.notes.R;

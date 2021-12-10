@@ -1,7 +1,9 @@
 package it.niedermann.owncloud.notes.edit;
 
+import static androidx.core.view.ViewCompat.isAttachedToWindow;
+import static it.niedermann.owncloud.notes.shared.util.NoteUtil.getFontSizeFromPreferences;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Layout;
@@ -21,19 +23,11 @@ import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException;
-import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException;
-import com.nextcloud.android.sso.helper.SingleAccountHelper;
 
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.databinding.FragmentNotePreviewBinding;
 import it.niedermann.owncloud.notes.main.AccountHelper;
-import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
-import it.niedermann.owncloud.notes.shared.util.SSOUtil;
-
-import static androidx.core.view.ViewCompat.isAttachedToWindow;
-import static it.niedermann.owncloud.notes.shared.util.NoteUtil.getFontSizeFromPreferences;
 
 public class NotePreviewFragment extends SearchableBaseNoteFragment implements OnRefreshListener {
 
@@ -154,7 +148,7 @@ public class NotePreviewFragment extends SearchableBaseNoteFragment implements O
 
     @Override
     public void onRefresh() {
-        if(AccountHelper.getCurrentAccount().getAccountName().equals("offline_account")) {
+        if("offline_account".equals(AccountHelper.getCurrentAccount().getAccountName())) {
             binding.swiperefreshlayout.setRefreshing(false);
         }
         else if (noteLoaded && repo.isSyncPossible()) {

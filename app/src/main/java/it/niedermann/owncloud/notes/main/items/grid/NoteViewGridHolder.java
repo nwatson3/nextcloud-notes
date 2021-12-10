@@ -1,5 +1,9 @@
 package it.niedermann.owncloud.notes.main.items.grid;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static it.niedermann.owncloud.notes.shared.util.NoteUtil.EXCERPT_LINE_SEPARATOR;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.TextUtils;
@@ -14,10 +18,6 @@ import it.niedermann.owncloud.notes.databinding.ItemNotesListNoteItemGridBinding
 import it.niedermann.owncloud.notes.main.items.NoteViewHolder;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
 import it.niedermann.owncloud.notes.shared.model.NoteClickListener;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static it.niedermann.owncloud.notes.shared.util.NoteUtil.EXCERPT_LINE_SEPARATOR;
 
 public class NoteViewGridHolder extends NoteViewHolder {
     @NonNull

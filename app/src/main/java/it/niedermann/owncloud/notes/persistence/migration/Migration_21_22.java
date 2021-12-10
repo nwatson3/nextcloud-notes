@@ -1,7 +1,6 @@
 package it.niedermann.owncloud.notes.persistence.migration;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;

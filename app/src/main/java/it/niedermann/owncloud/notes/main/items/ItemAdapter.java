@@ -1,7 +1,8 @@
 package it.niedermann.owncloud.notes.main.items;
 
+import static it.niedermann.owncloud.notes.shared.util.NoteUtil.getFontSizeFromPreferences;
+
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -36,8 +37,6 @@ import it.niedermann.owncloud.notes.main.items.section.SectionViewHolder;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
 import it.niedermann.owncloud.notes.shared.model.Item;
 import it.niedermann.owncloud.notes.shared.model.NoteClickListener;
-
-import static it.niedermann.owncloud.notes.shared.util.NoteUtil.getFontSizeFromPreferences;
 
 public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Branded {
 

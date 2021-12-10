@@ -1,5 +1,9 @@
 package it.niedermann.owncloud.notes.main.items;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+import static it.niedermann.owncloud.notes.shared.util.NotesColorUtil.contrastRatioIsSufficient;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -33,10 +37,6 @@ import it.niedermann.owncloud.notes.branding.BrandingUtil;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
 import it.niedermann.owncloud.notes.shared.model.DBStatus;
 import it.niedermann.owncloud.notes.shared.model.NoteClickListener;
-
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-import static it.niedermann.owncloud.notes.shared.util.NotesColorUtil.contrastRatioIsSufficient;
 
 public abstract class NoteViewHolder extends RecyclerView.ViewHolder {
     @NonNull

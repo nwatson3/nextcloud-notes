@@ -10,17 +10,9 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
 
-import it.niedermann.owncloud.notes.shared.model.ApiVersion;
 import it.niedermann.owncloud.notes.shared.model.Capabilities;
 
 @Entity(

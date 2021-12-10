@@ -1,7 +1,6 @@
 package it.niedermann.owncloud.notes.persistence.migration;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.room.migration.Migration;

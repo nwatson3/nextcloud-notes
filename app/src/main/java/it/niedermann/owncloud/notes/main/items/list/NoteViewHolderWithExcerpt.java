@@ -1,6 +1,5 @@
 package it.niedermann.owncloud.notes.main.items.list;
 
-import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;

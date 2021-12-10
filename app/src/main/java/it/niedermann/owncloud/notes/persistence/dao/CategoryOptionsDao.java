@@ -5,10 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import java.util.List;
-
 import it.niedermann.owncloud.notes.persistence.entity.CategoryOptions;
-import it.niedermann.owncloud.notes.persistence.entity.CategoryWithNotesCount;
 import it.niedermann.owncloud.notes.shared.model.CategorySortingMethod;
 
 @Dao

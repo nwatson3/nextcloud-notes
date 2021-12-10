@@ -14,14 +14,10 @@ import androidx.work.WorkerParameters;
 
 import com.nextcloud.android.sso.AccountImporter;
 import com.nextcloud.android.sso.exceptions.NextcloudHttpRequestFailedException;
-import com.nextcloud.android.sso.model.SingleSignOnAccount;
 
 import java.net.HttpURLConnection;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
-import it.niedermann.owncloud.notes.persistence.entity.Account;
-import it.niedermann.owncloud.notes.shared.model.Capabilities;
 
 public class CapabilitiesWorker extends Worker {
 

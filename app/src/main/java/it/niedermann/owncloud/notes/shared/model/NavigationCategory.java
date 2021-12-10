@@ -1,11 +1,11 @@
 package it.niedermann.owncloud.notes.shared.model;
 
+import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.DEFAULT_CATEGORY;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
-
-import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.DEFAULT_CATEGORY;
 
 public class NavigationCategory implements Serializable {
 

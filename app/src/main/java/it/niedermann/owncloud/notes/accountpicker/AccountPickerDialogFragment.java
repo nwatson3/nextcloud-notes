@@ -10,9 +10,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +25,6 @@ import it.niedermann.owncloud.notes.databinding.DialogChooseAccountBinding;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
 import it.niedermann.owncloud.notes.shared.account.AccountChooserAdapter;
-import it.niedermann.owncloud.notes.shared.account.AccountChooserViewHolder;
 
 /**
  * A {@link DialogFragment} which provides an {@link Account} chooser that hides the current {@link Account}.

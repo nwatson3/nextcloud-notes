@@ -1,5 +1,7 @@
 package it.niedermann.owncloud.notes.manageaccounts;
 
+import static androidx.lifecycle.Transformations.distinctUntilChanged;
+
 import android.app.Application;
 import android.content.Context;
 
@@ -7,10 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
-import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException;
-import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException;
-import com.nextcloud.android.sso.helper.SingleAccountHelper;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -20,8 +18,6 @@ import it.niedermann.owncloud.notes.main.AccountHelper;
 import it.niedermann.owncloud.notes.persistence.NotesRepository;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.shared.model.IResponseCallback;
-
-import static androidx.lifecycle.Transformations.distinctUntilChanged;
 
 public class ManageAccountsViewModel extends AndroidViewModel {
 

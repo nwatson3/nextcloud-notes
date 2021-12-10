@@ -1,5 +1,8 @@
 package it.niedermann.owncloud.notes.shared.util;
 
+import static it.niedermann.android.markdown.MarkdownUtil.removeMarkdown;
+import static it.niedermann.android.markdown.MarkdownUtil.replaceCheckboxesWithEmojis;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -8,9 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import it.niedermann.owncloud.notes.R;
-
-import static it.niedermann.android.markdown.MarkdownUtil.removeMarkdown;
-import static it.niedermann.android.markdown.MarkdownUtil.replaceCheckboxesWithEmojis;
 
 /**
  * Provides basic functionality for Note operations.

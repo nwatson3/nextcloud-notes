@@ -1,11 +1,11 @@
 package it.niedermann.owncloud.notes.main.items.selection;
 
+import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.selection.ItemKeyProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 
 public class ItemIdKeyProvider extends ItemKeyProvider<Long> {
     private final RecyclerView recyclerView;

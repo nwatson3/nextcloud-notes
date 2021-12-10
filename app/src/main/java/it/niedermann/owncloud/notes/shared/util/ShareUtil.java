@@ -1,5 +1,7 @@
 package it.niedermann.owncloud.notes.shared.util;
 
+import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -10,8 +12,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.niedermann.android.markdown.MarkdownUtil;
-
-import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 public class ShareUtil {
 

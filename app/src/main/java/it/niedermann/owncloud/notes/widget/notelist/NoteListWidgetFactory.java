@@ -1,5 +1,10 @@
 package it.niedermann.owncloud.notes.widget.notelist;
 
+import static it.niedermann.owncloud.notes.edit.EditNoteActivity.PARAM_CATEGORY;
+import static it.niedermann.owncloud.notes.persistence.entity.NotesListWidgetData.MODE_DISPLAY_ALL;
+import static it.niedermann.owncloud.notes.persistence.entity.NotesListWidgetData.MODE_DISPLAY_CATEGORY;
+import static it.niedermann.owncloud.notes.persistence.entity.NotesListWidgetData.MODE_DISPLAY_STARRED;
+
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -26,11 +31,6 @@ import it.niedermann.owncloud.notes.persistence.entity.NotesListWidgetData;
 import it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType;
 import it.niedermann.owncloud.notes.shared.model.NavigationCategory;
 import it.niedermann.owncloud.notes.shared.util.NotesColorUtil;
-
-import static it.niedermann.owncloud.notes.edit.EditNoteActivity.PARAM_CATEGORY;
-import static it.niedermann.owncloud.notes.persistence.entity.NotesListWidgetData.MODE_DISPLAY_ALL;
-import static it.niedermann.owncloud.notes.persistence.entity.NotesListWidgetData.MODE_DISPLAY_CATEGORY;
-import static it.niedermann.owncloud.notes.persistence.entity.NotesListWidgetData.MODE_DISPLAY_STARRED;
 
 public class NoteListWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
     private static final String TAG = NoteListWidgetFactory.class.getSimpleName();

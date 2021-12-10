@@ -1,8 +1,9 @@
 package it.niedermann.owncloud.notes;
 
+import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
+
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.util.Log;
 
@@ -10,8 +11,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
 
 import it.niedermann.owncloud.notes.preferences.DarkModeSetting;
-
-import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class NotesApplication extends Application {
     private static final String TAG = NotesApplication.class.getSimpleName();

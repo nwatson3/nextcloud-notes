@@ -1,5 +1,16 @@
 package it.niedermann.owncloud.notes.persistence;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static it.niedermann.owncloud.notes.shared.model.DBStatus.LOCAL_EDITED;
+import static it.niedermann.owncloud.notes.shared.model.DBStatus.VOID;
+
 import android.content.Context;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -24,17 +35,6 @@ import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
 import it.niedermann.owncloud.notes.persistence.sync.NotesAPI;
 import it.niedermann.owncloud.notes.shared.model.SyncResultStatus;
-
-import static it.niedermann.owncloud.notes.shared.model.DBStatus.LOCAL_EDITED;
-import static it.niedermann.owncloud.notes.shared.model.DBStatus.VOID;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("CallToThreadRun")
 @RunWith(RobolectricTestRunner.class)

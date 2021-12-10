@@ -1,5 +1,8 @@
 package it.niedermann.owncloud.notes.persistence;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import androidx.annotation.NonNull;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.room.Room;
@@ -14,9 +17,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import it.niedermann.owncloud.notes.persistence.entity.Account;
 import it.niedermann.owncloud.notes.shared.model.Capabilities;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricTestRunner.class)
 public class AccountDaoTest {

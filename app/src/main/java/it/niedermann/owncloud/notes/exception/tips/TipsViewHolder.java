@@ -1,5 +1,7 @@
 package it.niedermann.owncloud.notes.exception.tips;
 
+import static it.niedermann.owncloud.notes.exception.ExceptionDialogFragment.INTENT_EXTRA_BUTTON_TEXT;
+
 import android.content.Intent;
 import android.view.View;
 
@@ -8,8 +10,6 @@ import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import it.niedermann.owncloud.notes.databinding.ItemTipBinding;
-
-import static it.niedermann.owncloud.notes.exception.ExceptionDialogFragment.INTENT_EXTRA_BUTTON_TEXT;
 
 
 public class TipsViewHolder extends RecyclerView.ViewHolder {

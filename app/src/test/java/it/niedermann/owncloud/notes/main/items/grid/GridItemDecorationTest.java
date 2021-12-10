@@ -1,5 +1,14 @@
 package it.niedermann.owncloud.notes.main.items.grid;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import android.graphics.Rect;
 import android.view.View;
 
@@ -13,15 +22,6 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Arrays;
 
 import it.niedermann.owncloud.notes.main.items.ItemAdapter;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class GridItemDecorationTest {

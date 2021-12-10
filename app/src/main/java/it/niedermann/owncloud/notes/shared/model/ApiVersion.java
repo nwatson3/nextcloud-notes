@@ -4,7 +4,6 @@ package it.niedermann.owncloud.notes.shared.model;
 import androidx.annotation.NonNull;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")

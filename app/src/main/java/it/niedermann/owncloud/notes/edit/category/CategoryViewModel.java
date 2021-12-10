@@ -1,5 +1,9 @@
 package it.niedermann.owncloud.notes.edit.category;
 
+import static androidx.lifecycle.Transformations.map;
+import static androidx.lifecycle.Transformations.switchMap;
+import static it.niedermann.owncloud.notes.shared.util.DisplayUtils.convertToCategoryNavigationItem;
+
 import android.app.Application;
 import android.text.TextUtils;
 
@@ -12,10 +16,6 @@ import java.util.List;
 
 import it.niedermann.owncloud.notes.main.navigation.NavigationItem;
 import it.niedermann.owncloud.notes.persistence.NotesRepository;
-
-import static androidx.lifecycle.Transformations.map;
-import static androidx.lifecycle.Transformations.switchMap;
-import static it.niedermann.owncloud.notes.shared.util.DisplayUtils.convertToCategoryNavigationItem;
 
 public class CategoryViewModel extends AndroidViewModel {
 

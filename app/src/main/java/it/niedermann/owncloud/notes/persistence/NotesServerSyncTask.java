@@ -1,12 +1,17 @@
 package it.niedermann.owncloud.notes.persistence;
 
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
+import static java.net.HttpURLConnection.HTTP_NOT_MODIFIED;
+import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
+import static it.niedermann.owncloud.notes.shared.model.DBStatus.LOCAL_DELETED;
+import static it.niedermann.owncloud.notes.shared.util.NoteUtil.generateNoteExcerpt;
+
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.nextcloud.android.sso.AccountImporter;
-import com.nextcloud.android.sso.api.ParsedResponse;
 import com.nextcloud.android.sso.exceptions.NextcloudApiNotRespondingException;
 import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException;
 import com.nextcloud.android.sso.exceptions.NextcloudHttpRequestFailedException;
@@ -20,7 +25,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import it.niedermann.owncloud.notes.BuildConfig;
 import it.niedermann.owncloud.notes.persistence.entity.Account;
@@ -30,13 +34,6 @@ import it.niedermann.owncloud.notes.shared.model.DBStatus;
 import it.niedermann.owncloud.notes.shared.model.ISyncCallback;
 import it.niedermann.owncloud.notes.shared.model.SyncResultStatus;
 import it.niedermann.owncloud.notes.shared.util.ApiVersionUtil;
-import retrofit2.Response;
-
-import static it.niedermann.owncloud.notes.shared.model.DBStatus.LOCAL_DELETED;
-import static it.niedermann.owncloud.notes.shared.util.NoteUtil.generateNoteExcerpt;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
-import static java.net.HttpURLConnection.HTTP_NOT_MODIFIED;
-import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 
 
 /**

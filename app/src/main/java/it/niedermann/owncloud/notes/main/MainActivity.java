@@ -17,7 +17,6 @@ import static it.niedermann.owncloud.notes.shared.util.SSOUtil.askForNewAccount;
 import android.accounts.NetworkErrorException;
 import android.animation.AnimatorInflater;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -25,7 +24,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -413,7 +411,7 @@ public class MainActivity extends LockedActivity implements NoteClickListener, A
                     @Override
                     public void onSuccess(Void v) {
                         Log.d(TAG, "Successfully synchronized capabilities and notes for " + currentAccount.getAccountName());
-                        if(currentAccount.getAccountName().equals("offline_account")) {
+                        if("offline_account".equals(currentAccount.getAccountName())) {
                             swipeRefreshLayout.setRefreshing(false);
                         }
                     }

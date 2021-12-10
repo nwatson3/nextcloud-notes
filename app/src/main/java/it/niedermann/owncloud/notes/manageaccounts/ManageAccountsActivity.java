@@ -1,5 +1,9 @@
 package it.niedermann.owncloud.notes.manageaccounts;
 
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.LOLLIPOP_MR1;
+import static it.niedermann.owncloud.notes.shared.util.ApiVersionUtil.getPreferredApiVersion;
+
 import android.accounts.NetworkErrorException;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -15,7 +19,6 @@ import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.nextcloud.android.sso.AccountImporter;
@@ -34,10 +37,6 @@ import it.niedermann.owncloud.notes.shared.model.NotesSettings;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.LOLLIPOP_MR1;
-import static it.niedermann.owncloud.notes.shared.util.ApiVersionUtil.getPreferredApiVersion;
 
 public class ManageAccountsActivity extends LockedActivity {
 

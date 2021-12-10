@@ -1,5 +1,7 @@
 package it.niedermann.owncloud.notes.branding;
 
+import static it.niedermann.owncloud.notes.branding.BrandingUtil.getSecondaryForegroundColorDependingOnTheme;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.Button;
@@ -8,8 +10,6 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-
-import static it.niedermann.owncloud.notes.branding.BrandingUtil.getSecondaryForegroundColorDependingOnTheme;
 
 public class BrandedAlertDialogBuilder extends AlertDialog.Builder implements Branded {
 

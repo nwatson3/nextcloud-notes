@@ -1,10 +1,10 @@
 package it.niedermann.owncloud.notes.shared.util;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
 import it.niedermann.owncloud.notes.shared.model.CategorySortingMethod;
-
-import static org.junit.Assert.assertEquals;
 
 public class NavigationCategorySortingMethodTest {
 

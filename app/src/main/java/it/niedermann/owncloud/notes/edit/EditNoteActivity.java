@@ -1,26 +1,21 @@
 package it.niedermann.owncloud.notes.edit;
 
+import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.FAVORITES;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
-import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException;
-import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException;
-import com.nextcloud.android.sso.helper.SingleAccountHelper;
-
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Objects;
@@ -28,7 +23,6 @@ import java.util.Objects;
 import it.niedermann.owncloud.notes.LockedActivity;
 import it.niedermann.owncloud.notes.R;
 import it.niedermann.owncloud.notes.accountpicker.AccountPickerListener;
-import it.niedermann.owncloud.notes.databinding.ActivityEditBinding;
 import it.niedermann.owncloud.notes.databinding.ActivityEditBinding;
 import it.niedermann.owncloud.notes.edit.category.CategoryViewModel;
 import it.niedermann.owncloud.notes.main.AccountHelper;
@@ -38,8 +32,6 @@ import it.niedermann.owncloud.notes.shared.model.DBStatus;
 import it.niedermann.owncloud.notes.shared.model.NavigationCategory;
 import it.niedermann.owncloud.notes.shared.util.NoteUtil;
 import it.niedermann.owncloud.notes.shared.util.ShareUtil;
-
-import static it.niedermann.owncloud.notes.shared.model.ENavigationCategoryType.FAVORITES;
 
 public class EditNoteActivity extends LockedActivity implements BaseNoteFragment.NoteFragmentListener, AccountPickerListener {
 
@@ -196,7 +188,7 @@ public class EditNoteActivity extends LockedActivity implements BaseNoteFragment
             content = "";
         }
         final var newNote = new Note(null, Calendar.getInstance(), NoteUtil.generateNonEmptyNoteTitle(content, this), content, categoryTitle, favorite, null);
-        if(AccountHelper.getCurrentAccount().getAccountName().equals("offline_account")) {
+        if("offline_account".equals(AccountHelper.getCurrentAccount().getAccountName())) {
             newNote.setStatus(DBStatus.LOCAL_ONLY);
         }
         fragment = NoteEditFragment.newInstanceWithNewNote(newNote);

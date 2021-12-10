@@ -1,5 +1,14 @@
 package it.niedermann.owncloud.notes.persistence;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static it.niedermann.owncloud.notes.shared.model.DBStatus.LOCAL_DELETED;
+import static it.niedermann.owncloud.notes.shared.model.DBStatus.LOCAL_EDITED;
+import static it.niedermann.owncloud.notes.shared.model.DBStatus.VOID;
+
 import android.database.sqlite.SQLiteConstraintException;
 
 import androidx.annotation.NonNull;
@@ -18,19 +27,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import it.niedermann.owncloud.notes.persistence.entity.Account;
-import it.niedermann.owncloud.notes.persistence.entity.CategoryWithNotesCount;
 import it.niedermann.owncloud.notes.persistence.entity.Note;
 import it.niedermann.owncloud.notes.shared.model.Capabilities;
 import it.niedermann.owncloud.notes.shared.model.DBStatus;
-
-import static it.niedermann.owncloud.notes.shared.model.DBStatus.LOCAL_DELETED;
-import static it.niedermann.owncloud.notes.shared.model.DBStatus.LOCAL_EDITED;
-import static it.niedermann.owncloud.notes.shared.model.DBStatus.VOID;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class NotesDaoTest {

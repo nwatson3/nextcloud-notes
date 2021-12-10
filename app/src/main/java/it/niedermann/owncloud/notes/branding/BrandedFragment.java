@@ -1,18 +1,16 @@
 package it.niedermann.owncloud.notes.branding;
 
-import android.content.Context;
+import static it.niedermann.owncloud.notes.branding.BrandingUtil.tintMenuIcon;
+
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import it.niedermann.owncloud.notes.R;
-
-import static it.niedermann.owncloud.notes.branding.BrandingUtil.tintMenuIcon;
 
 public abstract class BrandedFragment extends Fragment implements Branded {
 
